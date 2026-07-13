@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISTQB Security Tester</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.exam-container{
+    width:1400px;
+    height:95vh;
+    background:white;
+    border:1px solid #ccc;
+    display:flex;
+    flex-direction:column;
+}
+
+.top-bar{
+    background:#0c4d80;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.question-header{
+    background:#eaeaea;
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+}
+
+.question-area{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.question-title{
+    font-size:19px;
+    line-height:1.8;
+    white-space:pre-line;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.option{
+    display:block;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.navigation{
+    padding:15px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+}
+
+.left-buttons,
+.right-buttons{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.blue{
+    background:#0b5ea8;
+}
+
+.orange{
+    background:#f1ad43;
+}
+
+.dark{
+    background:#16344f;
+}
+
+.answer-box{
+    margin-top:25px;
+    padding:15px;
+    background:#fff8d6;
+    border:1px solid #d8c46b;
+    display:none;
+    font-weight:bold;
+}
+
+#resultScreen{
+    display:none;
+    padding:40px;
+    text-align:center;
+}
+
+#finalScore{
+    font-size:60px;
+    color:#0c4d80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <div class="top-bar">
+        <div>ISTQB Security Tester</div>
+        <div id="counter"></div>
+    </div>
+
+    <div class="question-header">
+        Mock Exam
+    </div>
+
+    <div class="question-area">
+
+        <div id="question" class="question-title"></div>
+
+        <div id="options"></div>
+
+        <div id="answerBox" class="answer-box"></div>
+
+    </div>
+
+    <div id="resultScreen">
+
+        <h1>ISTQB Security Tester</h1>
+
+        <h2>Exam Result</h2>
+
+        <br>
+
+        <div id="finalScore"></div>
+
+        <br>
+
+        <h3 id="correctCount"></h3>
+
+        <h3 id="incorrectCount"></h3>
+
+        <h3 id="answeredCount"></h3>
+
+        <h3 id="unansweredCount"></h3>
+
+        <br>
+
+        <h2 id="examStatus"></h2>
+
+    </div>
+
+    <div class="navigation">
+
+        <div class="left-buttons">
+
+            <button class="blue"
+                    onclick="previousQuestion()">
+                ◀ Previous
+            </button>
+
+            <button class="blue"
+                    onclick="nextQuestion()">
+                Next ▶
+            </button>
+
+        </div>
+
+        <div class="right-buttons">
+
+            <button class="orange"
+                    onclick="showAnswer()">
+                Show Answer
+            </button>
+
+            <button class="dark"
+                    onclick="saveSession()">
+                Save Session
+            </button>
+
+            <button class="dark"
+                    onclick="endExam()">
+                End Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PEGAR AQUÍ TU ARRAY QUESTIONS */
+
+const questions = [
+
+
+{
+id:101,
+question:`Für ein Unternehmen wird eine Sicherheitsrisikobewertung durchgeführt.
+
+Warum ist diese Risikobewertung für Sicherheitstests besonders wichtig?`,
+options:[
+"Sie definiert die Programmiersprache",
+"Sie bestimmt die Geschäftsstrategie",
+"Sie hilft, Sicherheitstests auf die wichtigsten Risiken auszurichten",
+"Sie ersetzt die Testplanung"
+],
+correct:2
+},
+
+{
+id:102,
+question:`Ein Sicherheitstester erhält eine Risikobewertung, die vor zwei Jahren erstellt wurde.
+
+Welches Risiko besteht hauptsächlich?`,
+options:[
+"Die Sicherheitsrisiken könnten sich inzwischen verändert haben",
+"Die Bewertung kann keine Assets enthalten",
+"Die Bewertung darf nicht für Tests verwendet werden",
+"Die Bewertung enthält zu viele Informationen"
+],
+correct:0
+},
+
+{
+id:103,
+question:`Welche der folgenden Informationen stellt am ehesten ein Asset dar?`,
+options:[
+"Ein Testfall",
+"Ein Geschäftsgeheimnis",
+"Ein Fehlerbericht",
+"Ein Auditprotokoll"
+],
+correct:1
+},
+
+{
+id:104,
+question:`Ein Unternehmen speichert sensible Kundendaten sowohl auf Servern als auch auf Notebooks.
+
+Welche Aussage entspricht dem Syllabus am ehesten?`,
+options:[
+"Assets können sowohl digital als auch physisch vorhanden sein",
+"Nur digitale Assets müssen geschützt werden",
+"Notebooks sind keine Assets",
+"Asset-Management betrifft nur Server"
+],
+correct:0
+},
+
+{
+id:105,
+question:`Welche Fragestellung gehört unmittelbar zur Asset-Ermittlung?`,
+options:[
+"Welche Testwerkzeuge werden verwendet?",
+"Welche Assets sind für das Unternehmen wertvoll?",
+"Wie viele Tester sind verfügbar?",
+"Welche Programmiersprache wird eingesetzt?"
+],
+correct:1
+},
+
+{
+id:106,
+question:`Welcher Faktor kann laut Syllabus zur Bestimmung des Werts eines Assets genutzt werden?`,
+options:[
+"Bildschirmgröße der Benutzer",
+"Alter der Anwendung",
+"Zukünftiger Umsatz, den das Asset generieren soll",
+"Anzahl der Entwickler"
+],
+correct:2
+},
+
+{
+id:107,
+question:`Ein Unternehmen hat starke Verschlüsselung eingeführt, aber niemand weiß genau, wer Zugriff auf die Schlüssel besitzt.
+
+Welche Frage zur Asset-Sicherheit wurde nicht ausreichend beantwortet?`,
+options:[
+"Wie erfolgt der Zugriff?",
+"Wo befinden sich die Assets?",
+"Wie wertvoll sind die Assets?",
+"Wie sind die Assets geschützt?"
+],
+correct:3
+},
+
+{
+id:108,
+question:`Eine Sicherheitsrisikobewertung soll externe Stakeholder berücksichtigen.
+
+Welche Gruppe gehört laut Syllabus ausdrücklich dazu?`,
+options:[
+"Öffentlichkeit und Gesellschaft",
+"Interne Entwickler",
+"Projektmanager",
+"Systemadministratoren"
+],
+correct:0
+},
+
+{
+id:109,
+question:`Welche der folgenden Aufgaben gehört zur Vorbereitung einer Risikobewertung?`,
+options:[
+"Durchführung eines Penetrationstests",
+"Ermittlung des Bewertungsumfangs",
+"Installation von Sicherheitsupdates",
+"Definition eines Recovery-Plans"
+],
+correct:1
+},
+
+{
+id:110,
+question:`Ein Unternehmen analysiert Gefährdungsquellen, Schwachstellen und Schadensauswirkungen.
+
+In welcher Aktivität befindet es sich hauptsächlich?`,
+options:[
+"Durchführung einer Risikobewertung",
+"Durchführung eines Audits",
+"Implementierung von Richtlinien",
+"Konfigurationsmanagement"
+],
+correct:0
+},
+
+{
+id:111,
+question:`Welche Aussage zu Schwachstellen ist laut Syllabus korrekt?`,
+options:[
+"Schwachstellen entstehen ausschließlich durch Programmierfehler",
+"Schwachstellen können auch durch organisatorische Mängel entstehen",
+"Schwachstellen existieren nur in Anwendungen",
+"Schwachstellen sind identisch mit Risiken"
+],
+correct:1
+},
+
+{
+id:112,
+question:`Ein Angreifer nutzt einen Konfigurationsfehler einer Firewall aus.
+
+Welcher Risikofaktor wird dabei hauptsächlich ausgenutzt?`,
+options:[
+"Gefährdung",
+"Schadensausmaß",
+"Schwachstelle",
+"Wahrscheinlichkeit"
+],
+correct:2
+},
+
+{
+id:113,
+question:`Welche Aussage beschreibt die Eintrittswahrscheinlichkeit am besten?`,
+options:[
+"Die Schwere des Schadens",
+"Die Wahrscheinlichkeit, dass ein Gefährdungsereignis zu einem Schaden führt",
+"Den Wert eines Assets",
+"Die Kosten einer Gegenmaßnahme"
+],
+correct:1
+},
+
+{
+id:114,
+question:`Ein Risiko weist hohe Auswirkungen und hohe Eintrittswahrscheinlichkeit auf.
+
+Welche Aussage ist laut Syllabus zutreffend?`,
+options:[
+"Die Priorität zur Risikominderung sollte hoch sein",
+"Die Priorität hängt nur vom Asset-Wert ab",
+"Die Priorität ist niedrig",
+"Ein Audit ersetzt die Risikobehandlung"
+],
+correct:0
+},
+
+{
+id:115,
+question:`Welche Aussage über Sicherheitsrichtlinien ist am zutreffendsten?`,
+options:[
+"Sie sollten auf einer Risikobewertung basieren",
+"Sie ersetzen Sicherheitsverfahren",
+"Sie sind nur für Administratoren relevant",
+"Sie definieren ausschließlich technische Maßnahmen"
+],
+correct:0
+},
+
+{
+id:116,
+question:`Welche Richtlinie definiert typischerweise das Prinzip der minimalen Rechtevergabe?`,
+options:[
+"Passwort-Richtlinie",
+"Richtlinie zur akzeptablen Nutzung",
+"Richtlinie über Mindestmaß an Zugriffsrechten",
+"Internetzugangsrichtlinie"
+],
+correct:2
+},
+
+{
+id:117,
+question:`Ein Mitarbeiter erhält Administratorrechte, obwohl diese für seine Tätigkeit nicht erforderlich sind.
+
+Gegen welche Richtlinie wird hauptsächlich verstoßen?`,
+options:[
+"Remote Access Policy",
+"Least Privilege Policy",
+"Incident Response Policy",
+"Software Licensing Policy"
+],
+correct:1
+},
+
+{
+id:118,
+question:`Was unterscheidet ein Sicherheitsverfahren von einer Sicherheitsrichtlinie?`,
+options:[
+"Ein Verfahren beschreibt konkrete Implementierungsschritte",
+"Ein Verfahren ersetzt Richtlinien",
+"Ein Verfahren besitzt keinen Sicherheitsbezug",
+"Ein Verfahren wird nur für Audits verwendet"
+],
+correct:0
+},
+
+{
+id:119,
+question:`Welche Aussage beschreibt den Zweck eines Sicherheitsaudits am besten?`,
+options:[
+"Nachweis, dass keine Schwachstellen existieren",
+"Manuelle oder unterstützte Evaluierung der Sicherheitsprozesse und Infrastruktur",
+"Durchführung von Lasttests",
+"Erstellung von Anwendungsanforderungen"
+],
+correct:1
+},
+
+{
+id:120,
+question:`Laut Syllabus basieren Sicherheitsvorfälle häufig auf welchem Zusammenspiel?`,
+options:[
+"Hardware, Datenbank und Netzwerk",
+"Mensch, Prozess und Technik",
+"Programmierung, Betriebssystem und Browser",
+"Server, Switch und Firewall"
+],
+correct:1
+}
+
+];
+
+let currentQuestion = 0;
+
+let userAnswers =
+    new Array(questions.length).fill(null);
+
+function saveCurrentAnswer(){
+
+    const selected =
+        document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+    if(selected){
+
+        userAnswers[currentQuestion] =
+            parseInt(selected.value);
+    }
+}
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("counter").innerHTML =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("question").innerText =
+        q.question;
+
+    let html = "";
+
+    q.options.forEach((option,index)=>{
+
+        const checked =
+            userAnswers[currentQuestion] === index
+            ? "checked"
+            : "";
+
+        html += `
+        <label class="option">
+
+            <input
+                type="radio"
+                name="answer"
+                value="${index}"
+                ${checked}>
+
+            ${String.fromCharCode(65+index)}.
+            ${option}
+
+        </label>`;
+    });
+
+    document.getElementById("options").innerHTML =
+        html;
+
+    document.getElementById("answerBox").style.display =
+        "none";
+}
+
+function nextQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion < questions.length-1){
+
+        currentQuestion++;
+
+        loadQuestion();
+    }
+}
+
+function previousQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        loadQuestion();
+    }
+}
+
+function showAnswer(){
+
+    const q = questions[currentQuestion];
+
+    const letter =
+        String.fromCharCode(
+            65 + q.correct
+        );
+
+    document.getElementById("answerBox")
+        .style.display = "block";
+
+    document.getElementById("answerBox")
+        .innerHTML =
+        "✅ Correct Answer: " + letter;
+}
+
+function saveSession(){
+
+    localStorage.setItem(
+        "currentQuestion",
+        currentQuestion
+    );
+
+    localStorage.setItem(
+        "userAnswers",
+        JSON.stringify(userAnswers)
+    );
+
+    alert("Session saved");
+}
+
+function endExam(){
+
+    saveCurrentAnswer();
+
+    let correct = 0;
+
+    let answered = 0;
+
+    for(let i=0;i<questions.length;i++){
+
+        if(userAnswers[i] !== null){
+
+            answered++;
+
+            if(
+                userAnswers[i] ===
+                questions[i].correct
+            ){
+                correct++;
+            }
+        }
+    }
+
+    const total =
+        questions.length;
+
+    const incorrect =
+        answered - correct;
+
+    const unanswered =
+        total - answered;
+
+    const percentage =
+        (
+            (correct / total)
+            * 100
+        ).toFixed(2);
+
+    const passed =
+        percentage >= 65;
+
+    document.querySelector(".question-area")
+        .style.display = "none";
+
+    document.querySelector(".navigation")
+        .style.display = "none";
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        percentage + "%";
+
+    document.getElementById("correctCount")
+        .innerHTML =
+        "✅ Correct: " + correct;
+
+    document.getElementById("incorrectCount")
+        .innerHTML =
+        "❌ Incorrect: " + incorrect;
+
+    document.getElementById("answeredCount")
+        .innerHTML =
+        "📝 Answered: " + answered;
+
+    document.getElementById("unansweredCount")
+        .innerHTML =
+        "⚪ Unanswered: " + unanswered;
+
+    document.getElementById("examStatus")
+        .innerHTML =
+        passed
+        ? "✅ PASSED"
+        : "❌ FAILED";
+}
+
+if(questions.length > 0){
+    loadQuestion();
+}
+
+</script>
+
+</body>
+</html>

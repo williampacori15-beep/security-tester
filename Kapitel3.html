@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISTQB Security Tester</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.exam-container{
+    width:1400px;
+    height:95vh;
+    background:white;
+    border:1px solid #ccc;
+    display:flex;
+    flex-direction:column;
+}
+
+.top-bar{
+    background:#0c4d80;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.question-header{
+    background:#eaeaea;
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+}
+
+.question-area{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.question-title{
+    font-size:19px;
+    line-height:1.8;
+    white-space:pre-line;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.option{
+    display:block;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.navigation{
+    padding:15px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+}
+
+.left-buttons,
+.right-buttons{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.blue{
+    background:#0b5ea8;
+}
+
+.orange{
+    background:#f1ad43;
+}
+
+.dark{
+    background:#16344f;
+}
+
+.answer-box{
+    margin-top:25px;
+    padding:15px;
+    background:#fff8d6;
+    border:1px solid #d8c46b;
+    display:none;
+    font-weight:bold;
+}
+
+#resultScreen{
+    display:none;
+    padding:40px;
+    text-align:center;
+}
+
+#finalScore{
+    font-size:60px;
+    color:#0c4d80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <div class="top-bar">
+        <div>ISTQB Security Tester</div>
+        <div id="counter"></div>
+    </div>
+
+    <div class="question-header">
+        Mock Exam
+    </div>
+
+    <div class="question-area">
+
+        <div id="question" class="question-title"></div>
+
+        <div id="options"></div>
+
+        <div id="answerBox" class="answer-box"></div>
+
+    </div>
+
+    <div id="resultScreen">
+
+        <h1>ISTQB Security Tester</h1>
+
+        <h2>Exam Result</h2>
+
+        <br>
+
+        <div id="finalScore"></div>
+
+        <br>
+
+        <h3 id="correctCount"></h3>
+
+        <h3 id="incorrectCount"></h3>
+
+        <h3 id="answeredCount"></h3>
+
+        <h3 id="unansweredCount"></h3>
+
+        <br>
+
+        <h2 id="examStatus"></h2>
+
+    </div>
+
+    <div class="navigation">
+
+        <div class="left-buttons">
+
+            <button class="blue"
+                    onclick="previousQuestion()">
+                ◀ Previous
+            </button>
+
+            <button class="blue"
+                    onclick="nextQuestion()">
+                Next ▶
+            </button>
+
+        </div>
+
+        <div class="right-buttons">
+
+            <button class="orange"
+                    onclick="showAnswer()">
+                Show Answer
+            </button>
+
+            <button class="dark"
+                    onclick="saveSession()">
+                Save Session
+            </button>
+
+            <button class="dark"
+                    onclick="endExam()">
+                End Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PEGAR AQUÍ TU ARRAY QUESTIONS */
+
+const questions = [
+
+
+{
+id:301,
+question:`Sie analysieren ein Projekt, das einen sequenziellen Entwicklungslebenszyklus verwendet.
+
+Welche Aussage zum Sicherheitstestprozess entspricht dem Syllabus am ehesten?`,
+options:[
+"Sicherheitstests sollten ausschließlich während der Abnahmetests stattfinden",
+"Sicherheitstests müssen an den Entwicklungslebenszyklus angepasst werden",
+"Sicherheitstests sind unabhängig vom Entwicklungsprozess",
+"Nur Penetrationstests müssen geplant werden"
+],
+correct:1
+},
+
+{
+id:302,
+question:`Welches Hauptziel verfolgt die Planung von Sicherheitstests laut ISTQB-Sicherheitstestprozess?`,
+options:[
+"Einen angemessenen testbezogenen Umfang entsprechend der Sicherheitsrisiken festlegen",
+"Alle bekannten Schwachstellen eliminieren",
+"Die Testumgebung automatisieren",
+"Die Sicherheitsrichtlinie ersetzen"
+],
+correct:0
+},
+
+{
+id:303,
+question:`Welche Informationsquelle dient typischerweise als Grundlage für die Analyse und den Entwurf von Sicherheitstests?`,
+options:[
+"Marketingberichte",
+"Sicherheitsrisikobewertungen",
+"Projektbudget",
+"Personalakten"
+],
+correct:1
+},
+
+{
+id:304,
+question:`Welche Aktivität gehört zur Phase „Analyse und Entwurf von Sicherheitstests“?`,
+options:[
+"Definition von Sicherheitstestbedingungen",
+"Durchführung von Regressionstests",
+"Archivierung von Testergebnissen",
+"Installation von Betriebssystemen"
+],
+correct:0
+},
+
+{
+id:305,
+question:`Ein Sicherheitstester erstellt Testfälle auf Basis von Sicherheitsrisiken und Sicherheitsanforderungen.
+
+In welcher Prozessphase befindet sich der Tester hauptsächlich?`,
+options:[
+"Testabschluss",
+"Planung",
+"Entwurf",
+"Wartung"
+],
+correct:2
+},
+
+{
+id:306,
+question:`Welches der folgenden Elemente ist Bestandteil einer effektiven Sicherheitstestumgebung?`,
+options:[
+"Öffentliche Freigabe aller Testdaten",
+"Isolierung von anderen Systemen bei entsprechendem Risiko",
+"Verzicht auf Wiederholbarkeit",
+"Verwendung unbekannter Konfigurationen"
+],
+correct:1
+},
+
+{
+id:307,
+question:`Warum sollte eine Sicherheitstestumgebung reproduzierbar sein?`,
+options:[
+"Damit Tests wiederholt und Umgebungen wiederhergestellt werden können",
+"Damit keine Testdaten benötigt werden",
+"Damit Penetrationstests entfallen",
+"Damit weniger Dokumentation entsteht"
+],
+correct:0
+},
+
+{
+id:308,
+question:`Welcher Grund für die Einholung von Genehmigungen vor Sicherheitstests wird ausdrücklich im Syllabus genannt?`,
+options:[
+"Zur Beschleunigung des Testprozesses",
+"Zur Vermeidung regulatorischer Anforderungen",
+"Zur Verringerung der Anzahl der Tester",
+"Da bestimmte Testaktivitäten gesetzliche Auswirkungen haben können"
+],
+correct:3
+},
+
+{
+id:309,
+question:`Welche Aussage bezüglich Penetrationstests ist im Kontext von Genehmigungen am zutreffendsten?`,
+options:[
+"Penetrationstests benötigen normalerweise keine Genehmigung",
+"Penetrationstests sind ein Sonderfall, bei dem Genehmigungen besonders wichtig sind",
+"Penetrationstests dürfen nur von Administratoren durchgeführt werden",
+"Penetrationstests ersetzen Freigaben"
+],
+correct:1
+},
+
+{
+id:310,
+question:`Ein Sicherheitstest löst IDS-Alarme aus und wird als tatsächlicher Angriff interpretiert.
+
+Welcher Aspekt wurde wahrscheinlich unterschätzt?`,
+options:[
+"Die Bedeutung von Genehmigungen und Kommunikation",
+"Die Bedeutung von Regressionstests",
+"Die Bedeutung der Benutzerfreundlichkeit",
+"Die Bedeutung von Datenklassifizierung"
+],
+correct:0
+},
+
+{
+id:311,
+question:`Welche Information sollte laut Syllabus in einem Bericht über eine gefundene Sicherheitsschwachstelle enthalten sein?`,
+options:[
+"Private Kontaktdaten des Testers",
+"Art der Sicherheitsschwachstelle",
+"Projektbudget",
+"Lebenslauf des Entwicklers"
+],
+correct:1
+},
+
+{
+id:312,
+question:`Neben der Art der Schwachstelle sollte ein Defect Report laut Syllabus auch welches Element enthalten?`,
+options:[
+"Potenzielles Schadensausmaß",
+"Anzahl Entwickler",
+"Anzahl Testberichte",
+"Bürostandort"
+],
+correct:0
+},
+
+{
+id:313,
+question:`Warum müssen Sicherheitstestergebnisse häufig besonders geschützt werden?`,
+options:[
+"Weil sie technische Dokumente sind",
+"Weil sie Informationen über ausnutzbare Schwachstellen enthalten können",
+"Weil sie Performance-Daten enthalten",
+"Weil nur Entwickler sie verstehen"
+],
+correct:1
+},
+
+{
+id:314,
+question:`Welche Aktivität gehört zum Abschluss von Sicherheitstestaktivitäten?`,
+options:[
+"Installation neuer Firewalls",
+"Erstellen der Sicherheitsrichtlinie",
+"Sichere Archivierung von Testergebnissen und Testdaten",
+"Löschen aller Testergebnisse"
+],
+correct:2
+},
+
+{
+id:315,
+question:`Welches Ziel verfolgt die Wartung von Sicherheitstests?`,
+options:[
+"Auf neue Gefährdungen und Technologien reagieren zu können",
+"Testprozesse unverändert lassen",
+"Penetrationstests verhindern",
+"Testberichte vermeiden"
+],
+correct:0
+},
+
+{
+id:316,
+question:`Ein Unternehmen verwendet einen iterativen Entwicklungsprozess.
+
+Welche Aussage ist laut Syllabus korrekt?`,
+options:[
+"Sicherheitsanforderungen können während des Projekts entstehen und getestet werden",
+"Sicherheitstests dürfen nur am Projektende erfolgen",
+"Regressionstests sind nicht erforderlich",
+"Sicherheitsanforderungen werden nur einmal definiert"
+],
+correct:0
+},
+
+{
+id:317,
+question:`Welcher Vorteil ergibt sich aus der Durchführung von Sicherheitstests während eines iterativen Lebenszyklus?`,
+options:[
+"Risiken können häufig früher erkannt und adressiert werden",
+"Keine Testplanung mehr notwendig",
+"Keine Sicherheitsanforderungen erforderlich",
+"Weniger Kommunikation mit Stakeholdern"
+],
+correct:0
+},
+
+{
+id:318,
+question:`Wie beschreibt der Syllabus die Beziehung zwischen Sicherheitstestprozess und Entwicklungsprozess?`,
+options:[
+"Der Sicherheitstestprozess sollte parallel zu den Entwicklungsaktivitäten laufen",
+"Der Sicherheitstestprozess ersetzt den Entwicklungsprozess",
+"Sicherheitstests finden ausschließlich nach der Entwicklung statt",
+"Es besteht keine Beziehung"
+],
+correct:0
+},
+
+{
+id:319,
+question:`Welcher Aspekt ist bei der Analyse von Sicherheitstestergebnissen besonders wichtig?`,
+options:[
+"Art, Umfang und potenzielle Auswirkungen der Schwachstelle",
+"Anzahl der verwendeten Monitore",
+"Versionsnummer des Browsers",
+"Anzahl der Teammitglieder"
+],
+correct:0
+},
+
+{
+id:320,
+question:`Ein Unternehmen möchte seine Sicherheitstestprozesse langfristig wirksam halten.
+
+Welche Aussage entspricht dem Syllabus?`,
+options:[
+"Neue Gefährdungen machen Anpassungen der Testprozesse erforderlich",
+"Ein einmal definierter Prozess sollte unverändert bleiben",
+"Sicherheitstestwerkzeuge ändern sich nicht",
+"Nur gesetzliche Änderungen machen Anpassungen erforderlich"
+],
+correct:0
+}
+
+];
+
+let currentQuestion = 0;
+
+let userAnswers =
+    new Array(questions.length).fill(null);
+
+function saveCurrentAnswer(){
+
+    const selected =
+        document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+    if(selected){
+
+        userAnswers[currentQuestion] =
+            parseInt(selected.value);
+    }
+}
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("counter").innerHTML =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("question").innerText =
+        q.question;
+
+    let html = "";
+
+    q.options.forEach((option,index)=>{
+
+        const checked =
+            userAnswers[currentQuestion] === index
+            ? "checked"
+            : "";
+
+        html += `
+        <label class="option">
+
+            <input
+                type="radio"
+                name="answer"
+                value="${index}"
+                ${checked}>
+
+            ${String.fromCharCode(65+index)}.
+            ${option}
+
+        </label>`;
+    });
+
+    document.getElementById("options").innerHTML =
+        html;
+
+    document.getElementById("answerBox").style.display =
+        "none";
+}
+
+function nextQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion < questions.length-1){
+
+        currentQuestion++;
+
+        loadQuestion();
+    }
+}
+
+function previousQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        loadQuestion();
+    }
+}
+
+function showAnswer(){
+
+    const q = questions[currentQuestion];
+
+    const letter =
+        String.fromCharCode(
+            65 + q.correct
+        );
+
+    document.getElementById("answerBox")
+        .style.display = "block";
+
+    document.getElementById("answerBox")
+        .innerHTML =
+        "✅ Correct Answer: " + letter;
+}
+
+function saveSession(){
+
+    localStorage.setItem(
+        "currentQuestion",
+        currentQuestion
+    );
+
+    localStorage.setItem(
+        "userAnswers",
+        JSON.stringify(userAnswers)
+    );
+
+    alert("Session saved");
+}
+
+function endExam(){
+
+    saveCurrentAnswer();
+
+    let correct = 0;
+
+    let answered = 0;
+
+    for(let i=0;i<questions.length;i++){
+
+        if(userAnswers[i] !== null){
+
+            answered++;
+
+            if(
+                userAnswers[i] ===
+                questions[i].correct
+            ){
+                correct++;
+            }
+        }
+    }
+
+    const total =
+        questions.length;
+
+    const incorrect =
+        answered - correct;
+
+    const unanswered =
+        total - answered;
+
+    const percentage =
+        (
+            (correct / total)
+            * 100
+        ).toFixed(2);
+
+    const passed =
+        percentage >= 65;
+
+    document.querySelector(".question-area")
+        .style.display = "none";
+
+    document.querySelector(".navigation")
+        .style.display = "none";
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        percentage + "%";
+
+    document.getElementById("correctCount")
+        .innerHTML =
+        "✅ Correct: " + correct;
+
+    document.getElementById("incorrectCount")
+        .innerHTML =
+        "❌ Incorrect: " + incorrect;
+
+    document.getElementById("answeredCount")
+        .innerHTML =
+        "📝 Answered: " + answered;
+
+    document.getElementById("unansweredCount")
+        .innerHTML =
+        "⚪ Unanswered: " + unanswered;
+
+    document.getElementById("examStatus")
+        .innerHTML =
+        passed
+        ? "✅ PASSED"
+        : "❌ FAILED";
+}
+
+if(questions.length > 0){
+    loadQuestion();
+}
+
+</script>
+
+</body>
+</html>

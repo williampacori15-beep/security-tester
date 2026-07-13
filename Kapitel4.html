@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISTQB Security Tester</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.exam-container{
+    width:1400px;
+    height:95vh;
+    background:white;
+    border:1px solid #ccc;
+    display:flex;
+    flex-direction:column;
+}
+
+.top-bar{
+    background:#0c4d80;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.question-header{
+    background:#eaeaea;
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+}
+
+.question-area{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.question-title{
+    font-size:19px;
+    line-height:1.8;
+    white-space:pre-line;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.option{
+    display:block;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.navigation{
+    padding:15px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+}
+
+.left-buttons,
+.right-buttons{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.blue{
+    background:#0b5ea8;
+}
+
+.orange{
+    background:#f1ad43;
+}
+
+.dark{
+    background:#16344f;
+}
+
+.answer-box{
+    margin-top:25px;
+    padding:15px;
+    background:#fff8d6;
+    border:1px solid #d8c46b;
+    display:none;
+    font-weight:bold;
+}
+
+#resultScreen{
+    display:none;
+    padding:40px;
+    text-align:center;
+}
+
+#finalScore{
+    font-size:60px;
+    color:#0c4d80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <div class="top-bar">
+        <div>ISTQB Security Tester</div>
+        <div id="counter"></div>
+    </div>
+
+    <div class="question-header">
+        Mock Exam
+    </div>
+
+    <div class="question-area">
+
+        <div id="question" class="question-title"></div>
+
+        <div id="options"></div>
+
+        <div id="answerBox" class="answer-box"></div>
+
+    </div>
+
+    <div id="resultScreen">
+
+        <h1>ISTQB Security Tester</h1>
+
+        <h2>Exam Result</h2>
+
+        <br>
+
+        <div id="finalScore"></div>
+
+        <br>
+
+        <h3 id="correctCount"></h3>
+
+        <h3 id="incorrectCount"></h3>
+
+        <h3 id="answeredCount"></h3>
+
+        <h3 id="unansweredCount"></h3>
+
+        <br>
+
+        <h2 id="examStatus"></h2>
+
+    </div>
+
+    <div class="navigation">
+
+        <div class="left-buttons">
+
+            <button class="blue"
+                    onclick="previousQuestion()">
+                ◀ Previous
+            </button>
+
+            <button class="blue"
+                    onclick="nextQuestion()">
+                Next ▶
+            </button>
+
+        </div>
+
+        <div class="right-buttons">
+
+            <button class="orange"
+                    onclick="showAnswer()">
+                Show Answer
+            </button>
+
+            <button class="dark"
+                    onclick="saveSession()">
+                Save Session
+            </button>
+
+            <button class="dark"
+                    onclick="endExam()">
+                End Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PEGAR AQUÍ TU ARRAY QUESTIONS */
+
+const questions = [
+
+{
+id:401,
+question:`Während eines Reviews von Sicherheitsanforderungen finden Sie die Anforderung:
+
+"Der Zugang zum System muss sicher sein."
+
+Welches Problem liegt hauptsächlich vor?`,
+options:[
+"Die Anforderung ist nicht testbar und zu ungenau",
+"Die Anforderung enthält zu viele technische Details",
+"Die Anforderung beschreibt eine konkrete Testmethode",
+"Die Anforderung ist zu stark auf Benutzerfreundlichkeit ausgerichtet"
+],
+correct:0
+},
+
+{
+id:402,
+question:`Welche Frage sollte bei der Analyse von Anforderungen aus Sicherheitssicht gestellt werden?`,
+options:[
+"Wie viele Entwickler arbeiten am Projekt?",
+"Wurden Benutzerzugriffsrechte ermittelt und dokumentiert?",
+"Welcher Browser wird verwendet?",
+"Wie groß ist die Datenbank?"
+],
+correct:1
+},
+
+{
+id:403,
+question:`Ein Requirements-Dokument enthält keine Angaben zu Datenschutzanforderungen.
+
+Welche Schlussfolgerung ist am angemessensten?`,
+options:[
+"Datenschutz ist nur während des Systemtests relevant",
+"Die Anforderungen können aus Sicherheitssicht unvollständig sein",
+"Datenschutz wird durch Firewalls automatisch erfüllt",
+"Datenschutz betrifft ausschließlich Administratoren"
+],
+correct:1
+},
+
+{
+id:404,
+question:`Welche Aussage beschreibt die Rolle des Sicherheitstestens im Lebenszyklus am besten?`,
+options:[
+"Sicherheit wird am Ende des Projekts getestet",
+"Sicherheit wird primär durch Penetrationstests erreicht",
+"Sicherheit sollte während des gesamten Lebenszyklus berücksichtigt werden",
+"Sicherheit entsteht automatisch durch sichere Frameworks"
+],
+correct:2
+},
+
+{
+id:405,
+question:`Warum sollten Sicherheitsanforderungen möglichst früh definiert werden?`,
+options:[
+"Um Schwachstellen günstiger und früher zu erkennen",
+"Um Systemtests zu vermeiden",
+"Um den Wartungsaufwand zu erhöhen",
+"Um weniger Reviews durchführen zu müssen"
+],
+correct:0
+},
+
+{
+id:406,
+question:`Während der Entwurfsphase untersucht ein Sicherheitstester die Architektur einer Anwendung.
+
+Welches Ziel wird hauptsächlich verfolgt?`,
+options:[
+"Bewertung möglicher Sicherheitsmängel im Design",
+"Messung der Performance",
+"Erstellung von Benutzerhandbüchern",
+"Planung der Bereitstellung"
+],
+correct:0
+},
+
+{
+id:407,
+question:`Welcher Grundsatz aus dem Kapitel Entwurf wird ausdrücklich empfohlen?`,
+options:[
+"Erst autorisieren, danach authentifizieren",
+"Vertrauen sollte niemals vorausgesetzt werden",
+"Authentifizierung kann durch Client-Code erfolgen",
+"Steuerdaten und Nutzdaten können gemeinsam verarbeitet werden"
+],
+correct:1
+},
+
+{
+id:408,
+question:`Welche Aktivität ist typisch für die Implementierungsphase?`,
+options:[
+"Definition der Unternehmensstrategie",
+"Durchführung von Komponententests auf Sicherheitsaspekte",
+"Abnahme durch den Kunden",
+"Definition regulatorischer Vorgaben"
+],
+correct:1
+},
+
+{
+id:409,
+question:`Ein Entwickler implementiert Eingabevalidierungen gegen SQL-Injection.
+
+In welcher Lebenszyklusphase findet diese Aktivität hauptsächlich statt?`,
+options:[
+"Anforderungen",
+"Implementierung",
+"Abnahmetest",
+"Wartung"
+],
+correct:1
+},
+
+{
+id:410,
+question:`Welche Technik hilft besonders dabei, Sicherheitsprobleme bereits während der Implementierung zu erkennen?`,
+options:[
+"Code Reviews und statische Analyse",
+"Benutzer-Abnahmetests",
+"Disaster-Recovery-Tests",
+"Migrationstests"
+],
+correct:0
+},
+
+{
+id:411,
+question:`Warum sind Komponententests aus Sicherheitssicht wichtig?`,
+options:[
+"Sie prüfen Sicherheitsmechanismen auf Code-Ebene",
+"Sie ersetzen Integrationstests",
+"Sie validieren Geschäftsprozesse",
+"Sie dienen ausschließlich der Performancemessung"
+],
+correct:0
+},
+
+{
+id:412,
+question:`Ein Sicherheitstester analysiert die Schnittstelle zwischen Authentifizierungsmodul und Benutzerverwaltung.
+
+Welche Teststufe ist am ehesten betroffen?`,
+options:[
+"Komponententest",
+"Komponentenintegrationstest",
+"Abnahmetest",
+"Deployment-Test"
+],
+correct:1
+},
+
+{
+id:413,
+question:`Welche Aussage beschreibt den Schwerpunkt eines Komponentenintegrationstests?`,
+options:[
+"Überprüfung einzelner Codezeilen",
+"Überprüfung der Interaktion zwischen Komponenten",
+"Validierung der Geschäftsziele",
+"Bewertung der Benutzerfreundlichkeit"
+],
+correct:1
+},
+
+{
+id:414,
+question:`Ein Systemtest soll die korrekte Zusammenarbeit von Software, Hardware, Daten und Verfahren überprüfen.
+
+Welcher Aspekt wird dadurch besonders unterstützt?`,
+options:[
+"Ende-zu-Ende-Sicherheitsvalidierung auf Systemebene",
+"Codeoptimierung",
+"Compilerprüfung",
+"Versionierung"
+],
+correct:0
+},
+
+{
+id:415,
+question:`Welches Beispiel entspricht am ehesten einem Ende-zu-Ende-Sicherheitstestszenario?`,
+options:[
+"Prüfung einer einzelnen Passwortfunktion",
+"Review einer Sicherheitsrichtlinie",
+"Benutzer meldet sich an, führt Transaktionen aus und meldet sich ab",
+"Prüfung eines Datenbankindexes"
+],
+correct:2
+},
+
+{
+id:416,
+question:`Welche Aussage zu Abnahmetests ist korrekt?`,
+options:[
+"Sie dienen primär dem Auffinden von Programmierfehlern",
+"Sie prüfen, ob Sicherheitsanforderungen aus Nutzersicht erfüllt werden",
+"Sie ersetzen Systemtests",
+"Sie fokussieren ausschließlich Performance"
+],
+correct:1
+},
+
+{
+id:417,
+question:`Ein Kunde möchte sicherstellen, dass nur berechtigte Benutzer Kundendaten anzeigen können.
+
+In welcher Teststufe wird dies typischerweise endgültig bestätigt?`,
+options:[
+"Abnahmetest",
+"Code Review",
+"Modultest",
+"Build-Test"
+],
+correct:0
+},
+
+{
+id:418,
+question:`Welche Aussage zur Wartung entspricht dem Syllabus?`,
+options:[
+"Änderungen können neue Sicherheitslücken erzeugen",
+"Nach der Freigabe sind keine Sicherheitstests mehr notwendig",
+"Regressionstests sind unnötig",
+"Wartung betrifft nur Infrastruktur"
+],
+correct:0
+},
+
+{
+id:419,
+question:`Eine neue Version eines Betriebssystems wird eingeführt.
+
+Welche sicherheitsbezogene Testaktivität sollte durchgeführt werden?`,
+options:[
+"Regressionstests der Sicherheitsfunktionen",
+"Nur Leistungstests",
+"Nur Dokumentationsprüfungen",
+"Keine Tests sind notwendig"
+],
+correct:0
+},
+
+{
+id:420,
+question:`Warum sind Sicherheitsregressionstests während der Wartung wichtig?`,
+options:[
+"Um sicherzustellen, dass bestehende Schutzmaßnahmen weiterhin funktionieren",
+"Um Sicherheitsanforderungen zu löschen",
+"Um Abnahmetests zu ersetzen",
+"Um die Projektkosten zu erhöhen"
+],
+correct:0
+}
+
+
+];
+
+let currentQuestion = 0;
+
+let userAnswers =
+    new Array(questions.length).fill(null);
+
+function saveCurrentAnswer(){
+
+    const selected =
+        document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+    if(selected){
+
+        userAnswers[currentQuestion] =
+            parseInt(selected.value);
+    }
+}
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("counter").innerHTML =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("question").innerText =
+        q.question;
+
+    let html = "";
+
+    q.options.forEach((option,index)=>{
+
+        const checked =
+            userAnswers[currentQuestion] === index
+            ? "checked"
+            : "";
+
+        html += `
+        <label class="option">
+
+            <input
+                type="radio"
+                name="answer"
+                value="${index}"
+                ${checked}>
+
+            ${String.fromCharCode(65+index)}.
+            ${option}
+
+        </label>`;
+    });
+
+    document.getElementById("options").innerHTML =
+        html;
+
+    document.getElementById("answerBox").style.display =
+        "none";
+}
+
+function nextQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion < questions.length-1){
+
+        currentQuestion++;
+
+        loadQuestion();
+    }
+}
+
+function previousQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        loadQuestion();
+    }
+}
+
+function showAnswer(){
+
+    const q = questions[currentQuestion];
+
+    const letter =
+        String.fromCharCode(
+            65 + q.correct
+        );
+
+    document.getElementById("answerBox")
+        .style.display = "block";
+
+    document.getElementById("answerBox")
+        .innerHTML =
+        "✅ Correct Answer: " + letter;
+}
+
+function saveSession(){
+
+    localStorage.setItem(
+        "currentQuestion",
+        currentQuestion
+    );
+
+    localStorage.setItem(
+        "userAnswers",
+        JSON.stringify(userAnswers)
+    );
+
+    alert("Session saved");
+}
+
+function endExam(){
+
+    saveCurrentAnswer();
+
+    let correct = 0;
+
+    let answered = 0;
+
+    for(let i=0;i<questions.length;i++){
+
+        if(userAnswers[i] !== null){
+
+            answered++;
+
+            if(
+                userAnswers[i] ===
+                questions[i].correct
+            ){
+                correct++;
+            }
+        }
+    }
+
+    const total =
+        questions.length;
+
+    const incorrect =
+        answered - correct;
+
+    const unanswered =
+        total - answered;
+
+    const percentage =
+        (
+            (correct / total)
+            * 100
+        ).toFixed(2);
+
+    const passed =
+        percentage >= 65;
+
+    document.querySelector(".question-area")
+        .style.display = "none";
+
+    document.querySelector(".navigation")
+        .style.display = "none";
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        percentage + "%";
+
+    document.getElementById("correctCount")
+        .innerHTML =
+        "✅ Correct: " + correct;
+
+    document.getElementById("incorrectCount")
+        .innerHTML =
+        "❌ Incorrect: " + incorrect;
+
+    document.getElementById("answeredCount")
+        .innerHTML =
+        "📝 Answered: " + answered;
+
+    document.getElementById("unansweredCount")
+        .innerHTML =
+        "⚪ Unanswered: " + unanswered;
+
+    document.getElementById("examStatus")
+        .innerHTML =
+        passed
+        ? "✅ PASSED"
+        : "❌ FAILED";
+}
+
+if(questions.length > 0){
+    loadQuestion();
+}
+
+</script>
+
+</body>
+</html>

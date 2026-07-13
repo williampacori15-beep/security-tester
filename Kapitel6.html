@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISTQB Security Tester</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.exam-container{
+    width:1400px;
+    height:95vh;
+    background:white;
+    border:1px solid #ccc;
+    display:flex;
+    flex-direction:column;
+}
+
+.top-bar{
+    background:#0c4d80;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.question-header{
+    background:#eaeaea;
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+}
+
+.question-area{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.question-title{
+    font-size:19px;
+    line-height:1.8;
+    white-space:pre-line;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.option{
+    display:block;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.navigation{
+    padding:15px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+}
+
+.left-buttons,
+.right-buttons{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.blue{
+    background:#0b5ea8;
+}
+
+.orange{
+    background:#f1ad43;
+}
+
+.dark{
+    background:#16344f;
+}
+
+.answer-box{
+    margin-top:25px;
+    padding:15px;
+    background:#fff8d6;
+    border:1px solid #d8c46b;
+    display:none;
+    font-weight:bold;
+}
+
+#resultScreen{
+    display:none;
+    padding:40px;
+    text-align:center;
+}
+
+#finalScore{
+    font-size:60px;
+    color:#0c4d80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <div class="top-bar">
+        <div>ISTQB Security Tester</div>
+        <div id="counter"></div>
+    </div>
+
+    <div class="question-header">
+        Mock Exam
+    </div>
+
+    <div class="question-area">
+
+        <div id="question" class="question-title"></div>
+
+        <div id="options"></div>
+
+        <div id="answerBox" class="answer-box"></div>
+
+    </div>
+
+    <div id="resultScreen">
+
+        <h1>ISTQB Security Tester</h1>
+
+        <h2>Exam Result</h2>
+
+        <br>
+
+        <div id="finalScore"></div>
+
+        <br>
+
+        <h3 id="correctCount"></h3>
+
+        <h3 id="incorrectCount"></h3>
+
+        <h3 id="answeredCount"></h3>
+
+        <h3 id="unansweredCount"></h3>
+
+        <br>
+
+        <h2 id="examStatus"></h2>
+
+    </div>
+
+    <div class="navigation">
+
+        <div class="left-buttons">
+
+            <button class="blue"
+                    onclick="previousQuestion()">
+                ◀ Previous
+            </button>
+
+            <button class="blue"
+                    onclick="nextQuestion()">
+                Next ▶
+            </button>
+
+        </div>
+
+        <div class="right-buttons">
+
+            <button class="orange"
+                    onclick="showAnswer()">
+                Show Answer
+            </button>
+
+            <button class="dark"
+                    onclick="saveSession()">
+                Save Session
+            </button>
+
+            <button class="dark"
+                    onclick="endExam()">
+                End Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PEGAR AQUÍ TU ARRAY QUESTIONS */
+
+const questions = [
+
+
+{
+id:601,
+question:`Ein Unternehmen stellt fest, dass Mitarbeitende regelmäßig auf Links in unbekannten E-Mails klicken.
+
+Welcher Faktor beeinflusst das Sicherheitsrisiko in diesem Fall hauptsächlich?`,
+options:[
+"Die Firewall-Konfiguration",
+"Das menschliche Verhalten",
+"Die Datenbankarchitektur",
+"Die Netzwerktopologie"
+],
+correct:1
+},
+
+{
+id:602,
+question:`Warum beschäftigt sich ein Sicherheitstester mit der Mentalität von Angreifern?`,
+options:[
+"Um potenzielle Angriffsmethoden besser vorhersehen zu können",
+"Um die Benutzeroberfläche zu verbessern",
+"Um Sicherheitsrichtlinien zu ersetzen",
+"Um Software effizienter zu entwickeln"
+],
+correct:0
+},
+
+{
+id:603,
+question:`Welcher Beweggrund wird im Syllabus als typisches Angriffsmotiv genannt?`,
+options:[
+"Steigerung der Benutzerfreundlichkeit",
+"Wirtschaftlicher Vorteil",
+"Reduzierung der Betriebskosten",
+"Verbesserung der Softwarequalität"
+],
+correct:1
+},
+
+{
+id:604,
+question:`Ein ehemaliger Mitarbeiter verwendet weiterhin bekannte Zugangsdaten, um auf Unternehmensressourcen zuzugreifen.
+
+Welche Gefährdungsquelle liegt vor?`,
+options:[
+"Naturkatastrophe",
+"Hardwarefehler",
+"Interner Angreifer",
+"Fehlkonfiguration einer Firewall"
+],
+correct:2
+},
+
+{
+id:605,
+question:`Welche Aussage beschreibt Social Engineering am besten?`,
+options:[
+"Ausnutzung technischer Schwachstellen in Firewalls",
+"Nutzung menschlicher Schwächen zur Erlangung von Informationen oder Zugriffen",
+"Analyse von Netzwerkprotokollen",
+"Automatisierte Malware-Erkennung"
+],
+correct:1
+},
+
+{
+id:606,
+question:`Ein Angreifer ruft den Helpdesk an und gibt sich als Führungskraft aus, um ein Passwort zurücksetzen zu lassen.
+
+Welche Angriffstechnik wird angewendet?`,
+options:[
+"Cross-Site Scripting",
+"SQL Injection",
+"Buffer Overflow",
+"Social Engineering"
+],
+correct:3
+},
+
+{
+id:607,
+question:`Warum sind Social-Engineering-Angriffe oft erfolgreich?`,
+options:[
+"Weil technische Kontrollmechanismen umgangen werden können",
+"Weil Firewalls grundsätzlich nicht funktionieren",
+"Weil Verschlüsselung deaktiviert wird",
+"Weil Datenbanken öffentlich zugänglich sind"
+],
+correct:0
+},
+
+{
+id:608,
+question:`Ein Unternehmen möchte die Wirksamkeit seines Sicherheitsbewusstseins bewerten.
+
+Welcher Ansatz ist am geeignetsten?`,
+options:[
+"Prüfung der Hardwareauslastung",
+"Durchführung kontrollierter Phishing-Kampagnen",
+"Installation zusätzlicher Firewalls",
+"Überprüfung der Softwarelizenzen"
+],
+correct:1
+},
+
+{
+id:609,
+question:`Welcher Nutzen entsteht durch ein hohes Sicherheitsbewusstsein der Mitarbeitenden?`,
+options:[
+"Reduzierung menschlich verursachter Sicherheitsvorfälle",
+"Automatische Verschlüsselung aller Daten",
+"Vollständige Eliminierung von Malware",
+"Abschaffung von Authentifizierungssystemen"
+],
+correct:0
+},
+
+{
+id:610,
+question:`Welche Aussage über Angreifer ist laut Syllabus zutreffend?`,
+options:[
+"Alle Angreifer verfolgen dieselben Ziele",
+"Nur externe Personen greifen Systeme an",
+"Angreifer können unterschiedliche Motive und Fähigkeiten besitzen",
+"Interne Benutzer stellen keine Sicherheitsrisiken dar"
+],
+correct:2
+},
+
+{
+id:611,
+question:`Ein Angreifer versucht, vertrauliche Informationen eines Unternehmens an einen Wettbewerber zu verkaufen.
+
+Welches Motiv liegt am wahrscheinlichsten vor?`,
+options:[
+"Wirtschaftsspionage",
+"Benutzerfreundlichkeit",
+"Systemoptimierung",
+"Compliance"
+],
+correct:0
+},
+
+{
+id:612,
+question:`Warum sollte ein Sicherheitstester Angriffsszenarien analysieren?`,
+options:[
+"Um die Anzahl der Testfälle zu reduzieren",
+"Um realistische Bedrohungen besser adressieren zu können",
+"Um Sicherheitsrichtlinien zu vermeiden",
+"Um Benutzerrollen zu vereinfachen"
+],
+correct:1
+},
+
+{
+id:613,
+question:`Welche Aussage über menschliche Faktoren entspricht dem Syllabus am ehesten?`,
+options:[
+"Technologie allein reicht für wirksame Sicherheit aus",
+"Menschen, Prozesse und Technik beeinflussen gemeinsam die Sicherheit",
+"Nur Prozesse bestimmen die Informationssicherheit",
+"Sicherheit hängt ausschließlich von technischen Kontrollen ab"
+],
+correct:1
+},
+
+{
+id:614,
+question:`Ein Unternehmen investiert stark in technische Sicherheitsmaßnahmen, ignoriert jedoch Schulungen.
+
+Welches Risiko besteht?`,
+options:[
+"Mitarbeitende könnten Kontrollmechanismen falsch anwenden oder umgehen",
+"Die Datenbankgröße nimmt zu",
+"Die Verschlüsselung wird automatisch schwächer",
+"Die Firewall blockiert zu viele Verbindungen"
+],
+correct:0
+},
+
+{
+id:615,
+question:`Welcher Faktor erhöht laut Kapitel 6 typischerweise die Wahrscheinlichkeit erfolgreicher Angriffe?`,
+options:[
+"Unzureichendes Sicherheitsbewusstsein",
+"Hohe Netzwerkbandbreite",
+"Große Datenbanken",
+"Moderne Hardware"
+],
+correct:0
+},
+
+{
+id:616,
+question:`Welche Aktivität gehört zur Schärfung des Sicherheitsbewusstseins?`,
+options:[
+"Regelmäßige Security-Awareness-Schulungen",
+"Installation neuer Betriebssysteme",
+"Migration von Datenbanken",
+"Optimierung von Netzwerkroutern"
+],
+correct:0
+},
+
+{
+id:617,
+question:`Welche Aussage beschreibt den Nutzen von Security-Awareness-Kampagnen am besten?`,
+options:[
+"Sie ersetzen technische Sicherheitsmaßnahmen",
+"Sie unterstützen Benutzer dabei, Bedrohungen besser zu erkennen",
+"Sie verhindern jede Form von Angriff",
+"Sie reduzieren die Anzahl der Sicherheitsanforderungen"
+],
+correct:1
+},
+
+{
+id:618,
+question:`Ein Sicherheitstester bewertet die Wahrscheinlichkeit, dass Mitarbeitende auf gefälschte Links klicken.
+
+Welcher Kapitel-6-Aspekt wird hauptsächlich betrachtet?`,
+options:[
+"Angreifermentalität",
+"Physische Sicherheit",
+"Sicherheitsbewusstsein",
+"Datenklassifizierung"
+],
+correct:2
+},
+
+{
+id:619,
+question:`Welche Quelle von Angriffen wird im Syllabus ausdrücklich berücksichtigt?`,
+options:[
+"Sowohl interne als auch externe Angreifer",
+"Nur organisierte Kriminalität",
+"Nur technische Systeme",
+"Ausschließlich Wettbewerber"
+],
+correct:0
+},
+
+{
+id:620,
+question:`Warum ist das Verständnis menschlicher Faktoren für Sicherheitstester wichtig?`,
+options:[
+"Weil viele Sicherheitsvorfälle durch menschliches Verhalten beeinflusst werden",
+"Weil Authentifizierung dadurch ersetzt werden kann",
+"Weil technische Schwachstellen dadurch verschwinden",
+"Weil Sicherheitsrichtlinien automatisch eingehalten werden"
+],
+correct:0
+}
+
+];
+
+let currentQuestion = 0;
+
+let userAnswers =
+    new Array(questions.length).fill(null);
+
+function saveCurrentAnswer(){
+
+    const selected =
+        document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+    if(selected){
+
+        userAnswers[currentQuestion] =
+            parseInt(selected.value);
+    }
+}
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("counter").innerHTML =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("question").innerText =
+        q.question;
+
+    let html = "";
+
+    q.options.forEach((option,index)=>{
+
+        const checked =
+            userAnswers[currentQuestion] === index
+            ? "checked"
+            : "";
+
+        html += `
+        <label class="option">
+
+            <input
+                type="radio"
+                name="answer"
+                value="${index}"
+                ${checked}>
+
+            ${String.fromCharCode(65+index)}.
+            ${option}
+
+        </label>`;
+    });
+
+    document.getElementById("options").innerHTML =
+        html;
+
+    document.getElementById("answerBox").style.display =
+        "none";
+}
+
+function nextQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion < questions.length-1){
+
+        currentQuestion++;
+
+        loadQuestion();
+    }
+}
+
+function previousQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        loadQuestion();
+    }
+}
+
+function showAnswer(){
+
+    const q = questions[currentQuestion];
+
+    const letter =
+        String.fromCharCode(
+            65 + q.correct
+        );
+
+    document.getElementById("answerBox")
+        .style.display = "block";
+
+    document.getElementById("answerBox")
+        .innerHTML =
+        "✅ Correct Answer: " + letter;
+}
+
+function saveSession(){
+
+    localStorage.setItem(
+        "currentQuestion",
+        currentQuestion
+    );
+
+    localStorage.setItem(
+        "userAnswers",
+        JSON.stringify(userAnswers)
+    );
+
+    alert("Session saved");
+}
+
+function endExam(){
+
+    saveCurrentAnswer();
+
+    let correct = 0;
+
+    let answered = 0;
+
+    for(let i=0;i<questions.length;i++){
+
+        if(userAnswers[i] !== null){
+
+            answered++;
+
+            if(
+                userAnswers[i] ===
+                questions[i].correct
+            ){
+                correct++;
+            }
+        }
+    }
+
+    const total =
+        questions.length;
+
+    const incorrect =
+        answered - correct;
+
+    const unanswered =
+        total - answered;
+
+    const percentage =
+        (
+            (correct / total)
+            * 100
+        ).toFixed(2);
+
+    const passed =
+        percentage >= 65;
+
+    document.querySelector(".question-area")
+        .style.display = "none";
+
+    document.querySelector(".navigation")
+        .style.display = "none";
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        percentage + "%";
+
+    document.getElementById("correctCount")
+        .innerHTML =
+        "✅ Correct: " + correct;
+
+    document.getElementById("incorrectCount")
+        .innerHTML =
+        "❌ Incorrect: " + incorrect;
+
+    document.getElementById("answeredCount")
+        .innerHTML =
+        "📝 Answered: " + answered;
+
+    document.getElementById("unansweredCount")
+        .innerHTML =
+        "⚪ Unanswered: " + unanswered;
+
+    document.getElementById("examStatus")
+        .innerHTML =
+        passed
+        ? "✅ PASSED"
+        : "❌ FAILED";
+}
+
+if(questions.length > 0){
+    loadQuestion();
+}
+
+</script>
+
+</body>
+</html>

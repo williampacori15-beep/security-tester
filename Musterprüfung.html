@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISTQB Security Tester</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.exam-container{
+    width:1400px;
+    height:95vh;
+    background:white;
+    border:1px solid #ccc;
+    display:flex;
+    flex-direction:column;
+}
+
+.top-bar{
+    background:#0c4d80;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.question-header{
+    background:#eaeaea;
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+}
+
+.question-area{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.question-title{
+    font-size:19px;
+    line-height:1.8;
+    white-space:pre-line;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.option{
+    display:block;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.navigation{
+    padding:15px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+}
+
+.left-buttons,
+.right-buttons{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.blue{
+    background:#0b5ea8;
+}
+
+.orange{
+    background:#f1ad43;
+}
+
+.dark{
+    background:#16344f;
+}
+
+.answer-box{
+    margin-top:25px;
+    padding:15px;
+    background:#fff8d6;
+    border:1px solid #d8c46b;
+    display:none;
+    font-weight:bold;
+}
+
+#resultScreen{
+    display:none;
+    padding:40px;
+    text-align:center;
+}
+
+#finalScore{
+    font-size:60px;
+    color:#0c4d80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <div class="top-bar">
+        <div>ISTQB Security Tester</div>
+        <div id="counter"></div>
+    </div>
+
+    <div class="question-header">
+        Mock Exam
+    </div>
+
+    <div class="question-area">
+
+        <div id="question" class="question-title"></div>
+
+        <div id="options"></div>
+
+        <div id="answerBox" class="answer-box"></div>
+
+    </div>
+
+    <div id="resultScreen">
+
+        <h1>ISTQB Security Tester</h1>
+
+        <h2>Exam Result</h2>
+
+        <br>
+
+        <div id="finalScore"></div>
+
+        <br>
+
+        <h3 id="correctCount"></h3>
+
+        <h3 id="incorrectCount"></h3>
+
+        <h3 id="answeredCount"></h3>
+
+        <h3 id="unansweredCount"></h3>
+
+        <br>
+
+        <h2 id="examStatus"></h2>
+
+    </div>
+
+    <div class="navigation">
+
+        <div class="left-buttons">
+
+            <button class="blue"
+                    onclick="previousQuestion()">
+                ◀ Previous
+            </button>
+
+            <button class="blue"
+                    onclick="nextQuestion()">
+                Next ▶
+            </button>
+
+        </div>
+
+        <div class="right-buttons">
+
+            <button class="orange"
+                    onclick="showAnswer()">
+                Show Answer
+            </button>
+
+            <button class="dark"
+                    onclick="saveSession()">
+                Save Session
+            </button>
+
+            <button class="dark"
+                    onclick="endExam()">
+                End Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PEGAR AQUÍ TU ARRAY QUESTIONS */
+
+const questions = [
+
+{
+id:1,
+question:`Welche der folgenden Antworten spiegelt die Absicht eines Sicherheitsaudits wider?`,
+options:[
+"Benutzer daran hindern, einfache Passwörter zu nutzen",
+"Inadäquate Updates vom Verkäufer erkennen",
+"Unautorisierten Angreifern den Zugriff auf das System zu verbieten",
+"Benutzern vorschreiben, ihr Passwort nach einer vorgeschriebenen Anzahl von Tagen zu ändern"
+],
+correct:1
+},
+
+{
+id:2,
+question:`Als Teil einer Risikobewertung sind Sie dafür verantwortlich sicherzustellen, dass neue, extern hinzugezogene Lieferanten mit den von der Regierung angeordneten Richtlinien für das Projekt übereinstimmen.
+
+Auf welchen der Stakeholder sollten Sie sich in erster Linie konzentrieren, um sicher zu stellen, dass Ihre Lieferanten diesen Richtlinien auch weiterhin entsprechen?`,
+options:[
+"Kunden, Benutzer und Lieferanten, um eine gute Kommunikation zwischen diesen sicherzustellen",
+"Benutzer und Lieferanten, die sich nach aktueller Informationslage an das Gesetz halten",
+"Bundesweite, landesweite und örtliche Behörden, die die zu befolgenden Richtlinien kommunizieren",
+"Interne und externe Quellen, die die Informationen für weitere Risikoanalysen nutzen"
+],
+correct:2
+},
+
+{
+id:3,
+question:`Welcher der folgenden Punkte ist eine Konsequenz aus einer Richtlinie, die den Zugriff auf ein System oder Gerät auf ein akzeptables Level minimiert?`,
+options:[
+"Weitere Geräte werden hinzugefügt, um die Auswirkungen zu mildern",
+"Angemessene Kontrollen von selbst-versorgenden Geräten wie Router werden verboten sein",
+"Geräte, die den Richtlinien nicht entsprechen, werden aus dem kabellosen Netzwerk entfernt",
+"Zugriff auf VPN wird streng eingeschränkt werden"
+],
+correct:2
+},
+
+{
+id:4,
+question:`In Ihrer Rolle als Sicherheitsadministrator ist es Ihre Aufgabe, Ihrer Organisation zu helfen, die Effektivität von Sicherheitsrichtlinien und -verfahren innerhalb der gesamten Firma zu verstehen.
+
+Sie werden nach Fertigstellung der Analyse Ihre Ergebnisse zur Effektivität dem oberen Management berichten.
+
+Welcher der folgenden Punkte ist die optimale Strategie, um dies zu tun?`,
+options:[
+"Eine Bewertung einer statischen Analyse jeweils unabhängig für Richtlinien und Vorgänge durchführen",
+"Die Ergebnisse eines Sicherheitstests analysieren, um die Effektivität zu bestätigen",
+"Die Ergebnisse von Sicherheitstests bewerten, bei denen der Schwerpunkt auf aktuellen Gefahren und Attacken liegt",
+"Die statischen Testergebnisse für neue Softwaregefahren bewerten"
+],
+correct:1
+},
+
+{
+id:5,
+question:`Wie kann Sicherheitstesten für eine Organisation, die bei einer Verletzung der Sicherheit mit rechtlichen Konsequenzen zu rechnen hat, hilfreich sein?`,
+options:[
+"Es kann zeigen, dass die Organisation mit angemessener Sorgfalt versucht hat, solche Vorkommnisse zu vermeiden",
+"Die Dokumentation des Sicherheitstestens kann von Nutzen sein, um den Täter ausfindig zu machen",
+"Da alle wichtigen Informationen vor Beginn der Sicherheitstests auf einem Backup gespeichert werden, kann dieses Backup genutzt werden, um alle beschädigten Informationen wiederherzustellen",
+"Durch das Nachvollziehen der dokumentierten Tests kann das Sicherheitstestteam herausfinden, wie die Sicherheitsverletzung möglich war"
+],
+correct:0
+},
+
+{
+id:6,
+question:`Welche der folgenden Aussagen ist richtig?`,
+options:[
+"Informationsschutz ist ein Teil des Sicherheitstestens",
+"Informationsschutz und Sicherheitstesten sind zwei Ausdrücke, die das gleiche meinen",
+"Sicherheitstesten ist ein Teil von Informationsschutz",
+"Die zwei Ausdrücke beziehen sich auf unterschiedliche Bereiche von Sicherheit"
+],
+correct:2
+},
+
+{
+id:7,
+question:`Sie arbeiten bei einer Bank als Teil des Sicherheitstestteams.
+
+Während eines kürzlich durchgeführten Sicherheitsaudits wurde bemerkt, dass die Passwörter der Benutzer nicht sicher genug sind.
+
+Seither wurde eine Reihe von neuen Anforderungen für die Sicherheit von Passwörtern herausgegeben.
+
+Was wäre unter diesen Umständen eine angemessene Auswahl von Sicherheitszielen zum Testen von allgemeinen Passwortregeln?
+
+1) Verifizieren, dass die Passwörter den Voraussetzungen zur Länge entsprechen
+2) Verifizieren, dass die Passwörter den Voraussetzungen zum Nutzen von Zeichen, Nummern, Buchstaben und Großschreibung entsprechen
+3) Verifizieren, dass die Passworteingabe dreimal vergeblich versucht werden kann, bevor der Account gesperrt wird
+4) Verifizieren, dass die Passwörter nicht innerhalb eines Zeitraums von einem Jahr wiederverwendet werden können
+5) Verifizieren, dass die Passwörter alle drei Monate neu vergeben werden müssen
+6) Verifizieren, dass der Benutzer anfragen kann, das Passwort per Email zugesendet zu bekommen
+7) Verifizieren, dass der Systemadministrator ein gesperrtes Passwort zurücksetzen kann`,
+options:[
+"1, 2, 3, 4 wahr - 5, 6, 7 falsch",
+"1, 2, 4, 5 wahr - 3, 6, 7 falsch",
+"3, 4, 6, 7 wahr - 1, 2, 5 falsch",
+"4, 5, 6, 7 wahr - 1, 2, 3 falsch"
+],
+correct:1
+},
+
+{
+id:8,
+question:`Ihre Firma war neulich in den Schlagzeilen, nachdem eine Sicherheitsverletzung dazu führte, dass vertrauliche Nutzerinformationen gestohlen wurden.
+
+Das Management reagierte damit, den Umfang des Sicherheitstestens sofort auszuweiten.
+
+Sie stimmen zwar zu, dass etwas getan werden muss, sind aber trotzdem beunruhigt, dass dieser Ansatz zu reaktionsfreudig ist und nicht in dem Testen resultiert, das eigentlich nötig wäre.
+
+Welche Sorgen sind entlang des Lehrplans berechtigt, wenn diese Initiative eingeführt wird?`,
+options:[
+"Beim Testen werden weiterhin Probleme übersehen, da es nicht ausreichend fokussiert sein wird",
+"Das Testen wird ausgelagert (Outsourcing), so dass es effizienter wird",
+"Der Bereich des Testens könnte zu groß werden und die adäquaten Ressourcen, um das auszugleichen, könnten fehlen",
+"Die Ziele des Testens sind nicht klar genug definiert und könnten die gleichen Probleme übersehen, die bereits in der Produktion übersehen worden sind"
+],
+correct:2
+},
+
+{
+id:9,
+question:`Für eine Firma, die sensible medizinische Informationen, die zwischen Ärzten und Krankenhäusern geteilt werden, verarbeitet, haben Sie die Aufgabe übernommen, ein Sicherheitstestteam zu gründen.
+
+Sie haben festgestellt, dass die Sicherheit bezüglich dieser medizinischen Informationen nicht ausreicht, um sie vor versehentlicher Enthüllung oder sogar Hackern zu schützen.
+
+Die Person, die vorher Ihren Job gemacht hat, hat eine Reihe von Beratern für das Testen eingestellt.
+
+Die Testergebnisse wurden jedoch nicht dokumentiert und es wurde nichts geändert.
+
+Um genau zu sein, kennen Sie noch nicht einmal die Abdeckung der Tests.
+
+Sie haben Ihre Ergebnisse der Unternehmensleitung vorgestellt.
+
+Diese hat zwar zugestimmt, dass Sicherheitstesten prinzipiell benötigt wird, sie hat Ihnen jedoch weder Zeit noch Budget dafür zur Verfügung gestellt.
+
+Es scheint so, als wüsste die Unternehmensleitung zwar, dass ein größerer Fokus auf das Thema Sicherheit gut wäre, gleichermaßen ist sie aber nicht über die Folgen im Bilde, die damit einhergehend unternommen werden müssten.
+
+Was sollte Ihr erster Schritt sein, um die Unternehmensleitung an die zu erledigende Arbeit heranzuführen?`,
+options:[
+"Eine detaillierte Liste mit allen möglichen Sicherheitslücken erstellen und der Unternehmensleitung präsentieren",
+"Eine Zusammenfassung Ihrer Teststrategie zur Verfügung stellen und Beispiele geben, wie das Testen geleitet werden kann",
+"Die Rechtsabteilung hinzuziehen, um zu erklären, wieviel die Sicherheitsverletzungen das Unternehmen kosten könnten",
+"Eine Sicherheits- und Sicherheitstestrichtlinie entwickeln, um so zu zeigen, wie diese in Einklang mit Ihrer Teststrategie steht"
+],
+correct:3
+},
+
+{
+id:10,
+question:`Sie kommen gerade von einem Treffen, bei dem über die Sicherheitsvorgehensweise der Organisation diskutiert wurde.
+
+Ein besonders bedeutungsvoller Punkt war die Wichtigkeit des Testens, um sicher zu gehen, dass Daten vor betrügerischem Zugriff geschützt sind, insbesondere Kreditkarteninformationen.
+
+Sie wurden gebeten, eine Reihe von Testzielen vorzubereiten, die helfen sollen, die Risikobereiche einzugrenzen.
+
+Eine Ihrer Aufgaben ist es, sicherzustellen, dass alle Bedenken der Stakeholder aufgegriffen werden.
+
+Welche Gruppe von Stakeholdern wird am wahrscheinlichsten den Vorteil Ihrer Arbeit sehen?`,
+options:[
+"Unternehmensleitung",
+"Compliance-Beauftragte",
+"Geschäftskunden",
+"Zuständige aus dem regulatorischen Bereich"
+],
+correct:2
+},
+
+{
+id:11,
+question:`Als Sicherheitsadministrator sind Sie für Aspekte des Sicherheitsprozesses (inklusive Testen) verantwortlich.
+
+Für diesen Prozess nutzen Sie logische Tests (abstrakt) als Grundlage für manuelle Tests, um diese aus Sicht des externen Lieferanten durchzuführen.
+
+Welcher Sicherheitstestprozess ist am besten geeignet, um dies parallel durchzuführen?`,
+options:[
+"Sicherheitstestentwicklung auf Basis von Bedingungen und Zielen",
+"Sicherheitstestimplementierung",
+"Allumfassende Bewertungen und Berichte des Sicherheitstestens",
+"Sicherheitstestanalyse und Entwurf"
+],
+correct:1
+},
+
+{
+id:12,
+question:`Sie haben einen Sicherheitstestplan für ein System entwickelt, welches medizinische Informationen für Kunden speichert und die Daten an den jeweiligen Arzt weiterleitet.
+
+Sie haben folgende Bereiche in Ihrem Sicherheitstestplan abgedeckt:
+
+• Geltungsbereich
+• Rollen und Aufgaben
+• Verantwortlichkeiten
+• High-level Zeitplan
+• Umgebungsanforderungen und -aufbau
+• Liste notwendiger Autorisierungen und Genehmigungen
+
+Welche Informationen müssen Sie noch für diesen Sicherheitstestplan bereitstellen, um das Minimum an Anforderungen, wie im Lehrplan beschrieben, zu erreichen?`,
+options:[
+"Eine Liste der notwendigen Zugangsdaten und Trainings für die Tester",
+"Einen Zeitplan, der die Zeit für Design, Ausführung und Bewertung des Sicherheitstests enthält",
+"Eine Kopie der behördlichen Standards, die vom System eingehalten werden müssen",
+"Eine Liste der Personen und ihrer Kontaktdaten, die das Testen durchführen"
+],
+correct:1
+},
+
+{
+id:13,
+question:`Welcher der folgenden Testfälle testet das Sicherheitsvorgehen eines Systems am geeignetsten?`,
+options:[
+`Drei gescheiterte Login-Versuche erzeugen eine Nachricht „Gesperrt“. Kontaktieren Sie Ihren Manager oder Systemadministrator, so dass Ihnen ein temporäres Passwort via Telefon gegeben werden kann. Dann müssen Sie das temporäre Passwort beim Einloggen wieder ändern. Sie loggen sich aus und dann mit dem neu erstellten Passwort wieder ein.`,
+`Nach mehreren Login-Versuchen bekommen Sie eine Nachricht über Ihre Sperrung. Sie rufen die IT-Betreuung an, um ein neues Passwort zu erhalten. Dann loggen Sie sich mit dem temporären Passwort ein, loggen sich anschließend aus und erstellen beim erneuten Login Ihr neues Passwort.`,
+`Nach mehreren Versuchen werden Sie vom System gesperrt. Sie nutzen ein Passwort, das zuvor funktionierte, jetzt jedoch nicht mehr funktioniert. Sie versuchen ein neues Passwort zu erstellen, obwohl Sie nun gesperrt sind. Ein kompletter Neustart der Maschine ist der nächste Schritt, um zur erneuten Eingabe des Passworts zu gelangen.`,
+`Nach dem ersten Versuch, ein ungütiges Passwort einzugeben, nutzen Sie direkt eine Liste von Passwörtern Ihres PCs, um sicher zu gehen, dass Sie das Richtige nutzen. Sie probieren ein anderes Passwort der Liste aus und es funktioniert sofort.`
+],
+correct:0
+},
+
+{
+id:14,
+question:`Welche der folgenden Auswahlmöglichkeiten ist ein Hauptmerkmal einer effektiven Sicherheitstestumgebung?`,
+options:[
+"Enge Anbindung an das Produktionssystem, um die Sicherheit an jedem Punkt zu garantieren",
+"Isolierung von unterschiedlich alten Versionen des Betriebssystems in der Testumgebung",
+"Abbildung der Produktionsumgebung in Hinblick auf die Zugriffsrechte",
+"Vorhalten aller Plug-Ins der Produktionsumgebung sowie aller nicht in der Produktionsumgebung enthaltenen Plug-Ins"
+],
+correct:2
+},
+
+{
+id:15,
+question:`Welche Herausforderung erwartet Sie, wenn Sie eine Genehmigung für Sicherheitstestwerkzeuge einholen sollen?`,
+options:[
+"Einige Länder verbieten das Nutzen bestimmter Sicherheitstestwerkzeuge",
+"Der Genehmigungsprozess für Sicherheitstestwerkzeuge auf Basis einer Ausnahme muss überbrückt werden können",
+"Die Risiken eines Werkzeuges sind selten bekannt, bevor dieses bereitgestellt wird",
+"Es sind keine vorbeugenden Maßnahmen nötig"
+],
+correct:0
+},
+
+{
+id:16,
+question:`Nach einem Update und den dazugehörigen Tests Ihrer eCommerce-Seite bewerten Sie einen Satz von Sicherheitstestergebnissen, bevor Sie die aktualisierte Seite für die Produktion freigeben.
+
+Sie stellen fest, dass die Applikation einen Fehler enthält, der Cross-Site-Scripting möglich macht.
+
+Welche der folgenden Möglichkeiten enthält die richtigen Dinge, die nun getan werden sollten?`,
+options:[
+"Das Problem einem Entwickler melden, es dem Bericht für die Stakeholder hinzufügen und weiter testen",
+"Testen, ob das Problem ebenfalls in der aktuellen Version besteht, den Fehler in einem sicheren System dokumentieren, einen Entwickler benachrichtigen und weiterhin auf weitere XSS Fehler testen",
+"Das Ausmaß des Problems untersuchen, indem weitere Tests durchgeführt werden",
+"Das Management informieren, den Defekt dokumentieren und im wöchentlichen Bericht der Stakeholder festhalten"
+],
+correct:1
+},
+
+{
+id:17,
+question:`Zu welchem Zeitpunkt im Softwareentwicklungslebenszyklus sollte überprüft werden, dass sichere Programmierpraktiken verwendet wurden?`,
+options:[
+"Komponententest",
+"Integrationstest",
+"Systemtest",
+"Sicherheitsabnahmetest"
+],
+correct:0
+},
+
+{
+id:18,
+question:`Ein Unternehmensanalyst hat Sie beauftragt, die Anforderungen für die Sicherheitsaspekte eines Systems neu zu definieren.
+
+Es geht um ein sicherheitskritisches System, das medizinische Informationen für Patienten speichert und diese an Gesundheitsspezialisten in Krankenhäusern, Arztpraxen oder Krankenwagen weitergibt.
+
+An welcher Stelle im Softwareentwicklungslebenszyklus sollten die Sicherheitsanforderungen dokumentiert und wie detailliert sollte dies getan werden?`,
+options:[
+"Sie sollten gar nicht formal dokumentiert werden",
+"Sie sollten während der Anforderungsphase in einer detaillierten und eindeutigen Art und Weise festgehalten werden",
+"Sie sollten erst während der Designphase festgehalten werden",
+"Sie sollten auf den funktionalen Zugriff aus Sicht des Nutzers begrenzt werden"
+],
+correct:1
+},
+
+{
+id:19,
+question:`In der Produktion wurde eine Unzulänglichkeit gefunden.
+
+Wenn ein unautorisierter Nutzer eine URL von einer Websession eines autorisierten Nutzers kopiert, kann der unautorisierte Nutzer diese URL in seine Sitzung einfügen und mit den Rechten des autorisierten Nutzers fortfahren.
+
+Die Entwickler wollen die ID der Sitzung und die ID des Nutzers immer überprüfen, wenn eine URL verwendet wird.
+
+Welche Befürchtung ist bei dieser Lösung realistisch?`,
+options:[
+"Es wird das Problem nicht lösen",
+"Es wird das Problem lösen, aber die Benutzbarkeit könnte beeinflusst werden",
+"Es wird das Problem lösen, aber die Leistung könnte negativ beeinflusst werden",
+"Es wird neue Angriffspunkte durch Sitzungs-IDs eröffnen"
+],
+correct:2
+},
+
+{
+id:20,
+question:`Wieso sollten Sicherheitstester die Compiler-Warnungen während eines Tests auf Komponentenebene beachten?`,
+options:[
+"Weil diese auf Sicherheitsprobleme hinweisen, die repariert werden müssen",
+"Weil diese auf potenzielle Probleme hinweisen, die untersucht werden sollten",
+"Weil diese auf Programmierfehler hinweisen",
+"Weil diese auf schlechte Programmierpraktiken hinweisen"
+],
+correct:1
+},
+
+{
+id:21,
+question:`Sie haben ein System getestet, das 20 definierte Komponenten hat.
+
+Sie haben umfangreiche Sicherheitstests an jeder Komponente durchgeführt.
+
+Das System ist nun bereit, zum Sicherheitstesten der Komponentenintegration überzugehen.
+
+Wie sollten Sie diese Tests angehen?`,
+options:[
+"Da sich Komponentenintegrationstests mit der Summierung von Angriffspunkten der verschiedenen Komponenten befassen, ist es das Beste, die gleichen Tests an den integrierten Komponenten durchzuführen.",
+"Das Hauptrisiko ist die Integration der Komponenten. Daher sollte jede Verbindung einzeln getestet und verifiziert werden. Die Komponenten selbst sollten ebenfalls erneut getestet werden.",
+"Es ist wahrscheinlich, dass neue Angriffspunkte sowohl durch die integrierten Komponenten als auch durch die Möglichkeit, das größere System und die Infrastruktur zu betreiben, aufgetreten sind. Das Testen sollte um diese Aspekte ausgeweitet werden.",
+"Da die Komponenten nun integriert sind, sollten die Sicherheitsrisiken reduziert sein. Daher sollten nur die Integrationspunkte getestet werden."
+],
+correct:2
+},
+
+{
+id:22,
+question:`Sie erstellen Sicherheitstestfälle für eine SQL-Injection über ein Eingabefeld, in dem bis zu 5 alpha-numerische Zeichen erlaubt sind.
+
+Dabei unterteilen Sie die Testfälle in Äquivalenzklassen, um deren Anzahl zu reduzieren.
+
+Welche der folgenden Möglichkeiten enthält die minimale Auswahl von Eingaben, die Sie testen sollten?`,
+options:[
+"bbbbb, 12345, '",
+"%, ', @, ab123",
+"', ab123",
+"'"
+],
+correct:2
+},
+
+{
+id:23,
+question:`An Sie wurden folgende Anforderungen für das Sicherheitstesten gestellt.
+
+Nutzer haben die Möglichkeit, ihr Passwort abzufragen.
+
+Wenn solch eine Anfrage gestellt wird, müssen zwei der drei Sicherheitsfragen des Nutzers richtig beantwortet werden.
+
+Sind die Antworten richtig, wird ein Link an die hinterlegte Email-Adresse gesendet.
+
+Dieser Link verweist auf eine Seite, auf der das Passwort zurückgesetzt werden kann.
+
+Sobald dies erledigt ist, kann das neue Passwort zum Einloggen verwendet werden.
+
+Eine Stunde nach dem Versenden muss der Link deaktiviert werden.
+
+Die Nutzer dürfen nur zwei Anfragen für ein neues Passwort stellen, ohne ein Zurücksetzen herbeizuführen.
+
+Ansonsten müssen sie den Helpdesk anrufen.
+
+Bei jedem anderen Fehler wird die Nutzer ID gesperrt und muss vom Helpdesk entsperrt werden.
+
+Welche der folgenden Möglichkeiten enthält die Minimalanforderungen für die Testbedingungen, um die funktionale Sicherheit adäquat zu testen?`,
+options:[
+"Ungültiger Nutzer; gültiger Nutzer; 2 richtige Antworten; 2 falsche Antworten; gültige Email-Adresse; ungültige Email-Adresse; zurücksetzen mit gültigem Passwort; zurücksetzen mit ungültigem Passwort; Link gültig; Link abgelaufen; zwei Anfragen ohne Zurücksetzen; drei Anfragen ohne Zurücksetzen",
+"Gültiger Nutzer; 2 richtige Antworten; gültige Email-Adresse; Zurücksetzen mit gültigem Passwort; Link gültig; zwei Anfragen ohne Zurücksetzen",
+"Ungültiger Nutzer; 2 falsche Eingaben; ungültige Email-Adresse; Zurücksetzen mit ungültigem Passwort; Link abgelaufen; drei Anfragen ohne Zurücksetzen",
+"Buffer Overflow in jedem Eingabefeld; SQL-Injection in jedem Eingabefeld; XSS auf der Seite des Logins und Passwort-Zurücksetzens sowie alle funktionalen Tests"
+],
+correct:0
+},
+
+{
+id:24,
+question:`Nutzer haben die Möglichkeit, ihr Passwort abzufragen.
+
+Wenn solch eine Anfrage gestellt wird, müssen zwei der drei Sicherheitsfragen des Nutzers richtig beantwortet werden.
+
+Sind die Antworten richtig, wird ein Link an die hinterlegte Email-Adresse gesendet.
+
+Dieser Link verweist auf eine Seite, auf der das Passwort zurückgesetzt werden kann.
+
+Sobald dies erledigt ist, kann das neue Passwort zum Einloggen verwendet werden.
+
+Eine Stunde nach dem Versenden muss der Link deaktiviert werden.
+
+Die Nutzer dürfen nur zwei Anfragen für ein neues Passwort stellen, ohne ein Zurücksetzen herbeizuführen.
+
+Ansonsten müssen sie den Helpdesk anrufen.
+
+Bei jedem anderen Fehler wird die Nutzer ID gesperrt und muss vom Helpdesk entsperrt werden.
+
+Welche der folgenden Möglichkeiten ist eine gültige Menge von Abnahmekriterien für diese Anforderungen?
+
+1) Passwort zurücksetzen bei weniger als drei Anfragen
+2) Mehr als zwei Anfragen führen zur Sperrung der Nutzer ID
+3) Mehr als zwei Anfragen ohne Zurücksetzen führen zur Sperrung der Nutzer ID
+4) Mehr als zwei misslungene Sicherheitsfragen führen zu einem Fehler
+5) Mehr als zwei misslungene Sicherheitsfragen führen zur Sperrung der Nutzer ID
+6) Fehlerhafte Email-Adresse sperrt Nutzer ID
+7) Ungültiges Passwort zeigt Passwortvorgaben an
+8) Zurückgesetztes Passwort kann zum Login genutzt werden`,
+options:[
+"1, 2, 4, 6, 7, 8 wahr",
+"1, 2, 3, 4, 5, 6, 7, 8 wahr",
+"3, 5, 6, 7, 8 wahr",
+"1, 3, 5, 6, 8 wahr"
+],
+correct:3
+},
+
+{
+id:25,
+question:`Um die Effektivität der Sicherheit eines Systems zu testen, implementieren Sie Verfahren zur Bewertung der Systemhärtung.
+
+Welches Verfahren würden Sie wählen, um sicher zu gehen, dass eingerichtete Mechanismen der Systemhärtung wie erwartet funktionieren?`,
+options:[
+"Verschiedene Sicherheitsleistungsberichte und -metriken genau betrachten",
+"Regelmäßige Überprüfung der Stabilität der Authentifizierung",
+"Vergleich gehärteter Hardware- mit gehärteten Software-Komponenten",
+"Einen bekannten Hacker anwerben"
+],
+correct:0
+},
+
+{
+id:26,
+question:`Was sind Schlüsselattribute einer Sicherheitsautorisierung eines mittelmäßig komplexen IT-Systems?`,
+options:[
+"Sie verifiziert, dass der Nutzer das richtige Profil und die entsprechenden Rechte hat",
+"Sie bestimmt, wie viele Ressourcen des Systems der Nutzer verwenden darf",
+"Sie verifiziert, dass Nutzer, die das System benutzen, berechtigt sind",
+"Sie verwendet allgemein bekannte Anmeldedaten der Nutzer"
+],
+correct:2
+},
+
+{
+id:27,
+question:`Die typischen Verschlüsselungsmechanismen sind angreifbar, daher ist es wichtig, über ihre Effektivität zu jedem gegebenen Zeitpunkt Bescheid zu wissen.
+
+Welchen der folgenden Verschlüsselungsmechanismen sollten Sie implementieren, um Vertrauen zu erhalten?`,
+options:[
+"Kryptographische Schlüssel mit mindestens 256 Bit Länge",
+"Zufallsalgorithmen für alle Zufallszahlen",
+"Tests entwickeln, die sicherstellen, dass symmetrische Verschlüsselung in den richtigen Modi verwendet wird",
+"Alle WEP-Protokolle entfernen"
+],
+correct:2
+},
+
+{
+id:28,
+question:`Welche der Aussagen über die Beziehung einer Firewall und einer Netzwerkzone ist wahr?`,
+options:[
+"Sowohl Netzwerkzone als auch Firewall konzentrieren sich auf die Größe der Daten",
+"Eine Netzwerkzone kommuniziert mit sicheren Protokollen, während die Firewall diese absichert",
+"Ein Subnetzwerk kann als Netzwerkzone betrachtet werden und eine Firewall kann ein System zur Überwachung des Datenverkehrs sein",
+"Eine Netzwerkzone blockiert bösartigen Verkehr, den die Firewall nicht filtert"
+],
+correct:2
+},
+
+{
+id:29,
+question:`Sie arbeiten in einer Organisation, die ein Angriffserkennungssystem (IDS) einsetzt.
+
+Sie machen sich Sorgen, dass Datenverkehr, der als unautorisiert gelten müsste, trotzdem zugelassen wird.
+
+Welche der folgenden Möglichkeiten sollten Sie anwenden, um am effektivsten die Wirksamkeit des Angriffserkennungssystems zu testen?`,
+options:[
+"Eine Serie von Szenarien basierend auf vergangenen Ereignissen entwickeln",
+"Einen Test nutzen, der böswilligen Datenverkehr generiert und neue Angriffsspezifikationen liefert",
+"Das IDS in Situationen von bekanntem böswilligem Datenverkehr verwenden",
+"Das IDS in Verbindung mit weiteren IDS-Systemen nutzen"
+],
+correct:1
+},
+
+{
+id:30,
+question:`Welche der folgenden Möglichkeiten ist ein Hauptnachteil von Malware-Scannern (Schadsoftware-Scannern)?`,
+options:[
+"Sie erkennen nur bestimmte Ebenen von Malware",
+"Sie können nur Malware erkennen, die dem Scanner bekannt ist",
+"Sie sind zu kompliziert, um sie zu starten",
+"Sie bieten keine Möglichkeit für Updates und Berichte"
+],
+correct:1
+},
+
+{
+id:31,
+question:`Um das Risiko während des Testens zu minimieren, müssen Sie die persönlichen Identifizierungsnummern aus einem Altsystem entfernen.
+
+Ein Teil Ihres Plans zur Datenverschleierung ist die Verifizierung der Effektivität zur Verdeckung der Daten.
+
+Welche der folgenden Möglichkeiten ist der effektivste Ansatz?`,
+options:[
+"Manuelle Verifizierung innerhalb der Datenbank",
+"Eine Brute-Force-Attacke auf die maskierten Daten",
+"Die sensiblen Daten mit zufälligen Daten ersetzen",
+"Ein Programm generieren, das die Datenbank mit Angriffen belastet"
+],
+correct:1
+},
+
+{
+id:32,
+question:`Was wird häufig als schwächstes Glied der Softwaresicherheit gesehen?`,
+options:[
+"Fehlen eines konsistenten Sicherheitsschulungsplans",
+"Aktualisierungsaufwand von Dokumenten und Verfahren",
+"Das menschliche Verhalten",
+"Die Weiterentwicklung bösartiger Techniken"
+],
+correct:2
+},
+
+{
+id:33,
+question:`Welche der folgenden Möglichkeiten ist ein potenzielles Sicherheitsrisiko?`,
+options:[
+"Ein Schaubild der Buchhaltungsabteilung auf einer Unternehmenswebsite veröffentlichen",
+"Geburtstagswünsche für einen Mitarbeiter auf Facebook posten",
+"Das Telefonbuch eines Unternehmens im Intranet posten",
+"Die Berufserfahrung im LinkedIn-Profil angeben"
+],
+correct:0
+},
+
+{
+id:34,
+question:`Sie haben eine E-Mail von einer Person erhalten, die behauptet, sich mit Shodan in das System gehackt zu haben.
+
+Sie stellen fest, dass die Person recht hat und aktualisieren den betroffenen Server.
+
+Ihre Untersuchungen konnten jedoch nicht zeigen, wie die Person in das System gelangen konnte.
+
+Sollten Sie Bedenken haben?`,
+options:[
+"Nein, da es ein White-Hat-Hacker ist",
+"Nein, die Schwachstelle wurde behoben",
+"Ja, alle Tests müssen erneut durchgeführt werden",
+"Ja, der Hacker hat nicht erklärt, wie der Zugriff erfolgte und könnte weiterhin Zugang besitzen"
+],
+correct:3
+},
+
+{
+id:35,
+question:`Warum ist ein Angriff aus dem Inneren einer Organisation besonders besorgniserregend?`,
+options:[
+"Der Angreifer handelt aus Neugierde",
+"Der Angreifer ist gelangweilt",
+"Der Angreifer befindet sich bereits innerhalb der Firewall und gilt als autorisierter Nutzer",
+"Der Angreifer startet wahrscheinlich einen DOS-Angriff"
+],
+correct:2
+},
+
+{
+id:36,
+question:`Sie arbeiten in einer Organisation, in der nur drei Systemadministratoren das Root-Passwort kennen.
+
+Es wurden mehrere seltsame Vorfälle festgestellt:
+
+- Ein unbekanntes Geburtstagsprogramm versendete automatisch Grüße.
+- Die Telefonliste wurde manipuliert.
+- Das Root-Passwort war der Name des Hundes des leitenden Administrators.
+- Kurz zuvor wurden virusinfizierte E-Mails entdeckt.
+
+Was sollte Ihr nächster Nachforschungsschritt sein?`,
+options:[
+"Prüfen, ob HR-Geburtstagsdaten extern abgefragt wurden",
+"Überprüfen, ob der Hundename in sozialen Medien veröffentlicht wurde",
+"Die verdächtige E-Mail untersuchen und die Quelle zurückverfolgen",
+"Die Personalakten der anderen Administratoren untersuchen"
+],
+correct:2
+},
+
+{
+id:37,
+question:`Während des Testens eines Upgrades finden Sie heraus, dass eine Man-In-The-Middle-Attacke den Rechnungsbetrag auf Ihrer eCommerce-Seite verändern kann.
+
+Die Tester konnten erfolgreich einen Rabatt von 10 % für alle Kunden erzeugen.
+
+Was sollten Sie als erstes tun?`,
+options:[
+"Diese Art von Test zukünftig verbieten",
+"Sofort das Management informieren",
+"Mit Entwicklern SSL-Strip-Kontrollen durchführen",
+"Prüfen, ob dieselbe Schwachstelle auch in der Produktionsumgebung existiert"
+],
+correct:3
+},
+
+{
+id:38,
+question:`Warum ist es wichtig, Sicherheitsrisikoerwartungen regelmäßig neu einzuschätzen?`,
+options:[
+"Alle Stakeholder müssen jederzeit alle Risiken kennen",
+"Stakeholder treffen Geschäftsentscheidungen auf Basis der Risikolevel",
+"Nutzer müssen Handbücher zur Risikovermeidung erstellen",
+"Erwartungen sollten sich nicht ändern"
+],
+correct:1
+},
+
+{
+id:39,
+question:`Welche der folgenden Möglichkeiten ist ein wichtiger Aspekt bei Sicherheitstestergebnissen?`,
+options:[
+"Sie werden für Nutzer und Stakeholder veröffentlicht",
+"Sie sollten mit allen Entwicklern geteilt werden",
+"Je weniger Leute die Ergebnisse kennen, desto besser",
+"Sie sollten immer nach Kritikalität klassifiziert werden"
+],
+correct:2
+},
+
+{
+id:40,
+question:`Sie finalisieren einen Sicherheitsteststatusreport für ein System mit hohem Risikograd.
+
+Welche Möglichkeit ist die beste, um das Risiko deutlich zu machen?`,
+options:[
+"Eine anschauliche Risikobewertung in der Zusammenfassung",
+"Das Risiko ausschließlich im letzten Abschnitt",
+"Risikoauswirkungen in der Zusammenfassung und später detailliert erläutern",
+"Risikoauswirkungen gehören nicht in die Zusammenfassung"
+],
+correct:2
+},
+
+{
+id:41,
+question:`In welcher Weise unterscheiden sich dynamische Sicherheitsanalysewerkzeuge von allgemeinen dynamischen Analysewerkzeugen?`,
+options:[
+"Sie sondieren eher das System als die Anwendung",
+"Sie funktionieren dynamisch oder statisch gleich",
+"Sie sind besser geeignet, Memory-Leaks zu finden",
+"Sie müssen exakt auf die Programmiersprache zugeschnitten sein"
+],
+correct:0
+},
+
+{
+id:42,
+question:`Sie testen eine Firewall.
+
+Implementierung, Konfiguration und Port-Scan wurden bereits überprüft.
+
+Die Organisation hat besondere Sorgen wegen möglicher DOS-Angriffe.
+
+Welche Testart sollten Sie durchführen, um unerwartetes Verhalten zu erkennen?`,
+options:[
+"Falsch strukturierte Netzwerkpakete oder Fuzz-Daten senden",
+"Automatisierte Server-Stresstests durchführen",
+"Verschlüsselungsalgorithmen auf Performance testen",
+"Die Härtung von Softwarekomponenten prüfen"
+],
+correct:0
+},
+
+{
+id:43,
+question:`Welche der folgenden Möglichkeiten ist eine wichtige Überlegung für die Instandhaltung eines Werkzeugs unter der GNU General Public License?`,
+options:[
+"Verlässlichkeit eines Lieferanten",
+"Häufigkeit von Hersteller-Updates",
+"Technische Fähigkeiten des Teams zur Wartung und Anpassung",
+"Lizenz- und Vertragskosten"
+],
+correct:2
+},
+
+{
+id:44,
+question:`Welche der folgenden Möglichkeiten ist ein Vorteil der Verwendung von Sicherheitsstandards?`,
+options:[
+"Sie sind unabhängig von Projektzielen",
+"Sie liefern Bausteine für zukünftige Tests",
+"Sie beschreiben effektive Offensivmaßnahmen",
+"Sie erlauben beliebige Sicherheitspraktiken"
+],
+correct:1
+},
+
+{
+id:45,
+question:`Welche der folgenden Möglichkeiten ist ein Vorteil von vertraglich auferlegten Sicherheitsstandards?`,
+options:[
+"Sie bieten jederzeit eine rechtliche Ausstiegsmöglichkeit",
+"Sie bieten beiden Seiten eine gute Grundlage für Verhandlungen",
+"Sie dienen öffentlichen Vereinbarungen",
+"Sie ändern sich automatisch mit den Standards"
+],
+correct:1
+}
+
+];
+
+let currentQuestion = 0;
+
+let userAnswers =
+    new Array(questions.length).fill(null);
+
+function saveCurrentAnswer(){
+
+    const selected =
+        document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+    if(selected){
+
+        userAnswers[currentQuestion] =
+            parseInt(selected.value);
+    }
+}
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("counter").innerHTML =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("question").innerText =
+        q.question;
+
+    let html = "";
+
+    q.options.forEach((option,index)=>{
+
+        const checked =
+            userAnswers[currentQuestion] === index
+            ? "checked"
+            : "";
+
+        html += `
+        <label class="option">
+
+            <input
+                type="radio"
+                name="answer"
+                value="${index}"
+                ${checked}>
+
+            ${String.fromCharCode(65+index)}.
+            ${option}
+
+        </label>`;
+    });
+
+    document.getElementById("options").innerHTML =
+        html;
+
+    document.getElementById("answerBox").style.display =
+        "none";
+}
+
+function nextQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion < questions.length-1){
+
+        currentQuestion++;
+
+        loadQuestion();
+    }
+}
+
+function previousQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        loadQuestion();
+    }
+}
+
+function showAnswer(){
+
+    const q = questions[currentQuestion];
+
+    const letter =
+        String.fromCharCode(
+            65 + q.correct
+        );
+
+    document.getElementById("answerBox")
+        .style.display = "block";
+
+    document.getElementById("answerBox")
+        .innerHTML =
+        "✅ Correct Answer: " + letter;
+}
+
+function saveSession(){
+
+    localStorage.setItem(
+        "currentQuestion",
+        currentQuestion
+    );
+
+    localStorage.setItem(
+        "userAnswers",
+        JSON.stringify(userAnswers)
+    );
+
+    alert("Session saved");
+}
+
+function endExam(){
+
+    saveCurrentAnswer();
+
+    let correct = 0;
+
+    let answered = 0;
+
+    for(let i=0;i<questions.length;i++){
+
+        if(userAnswers[i] !== null){
+
+            answered++;
+
+            if(
+                userAnswers[i] ===
+                questions[i].correct
+            ){
+                correct++;
+            }
+        }
+    }
+
+    const total =
+        questions.length;
+
+    const incorrect =
+        answered - correct;
+
+    const unanswered =
+        total - answered;
+
+    const percentage =
+        (
+            (correct / total)
+            * 100
+        ).toFixed(2);
+
+    const passed =
+        percentage >= 65;
+
+    document.querySelector(".question-area")
+        .style.display = "none";
+
+    document.querySelector(".navigation")
+        .style.display = "none";
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        percentage + "%";
+
+    document.getElementById("correctCount")
+        .innerHTML =
+        "✅ Correct: " + correct;
+
+    document.getElementById("incorrectCount")
+        .innerHTML =
+        "❌ Incorrect: " + incorrect;
+
+    document.getElementById("answeredCount")
+        .innerHTML =
+        "📝 Answered: " + answered;
+
+    document.getElementById("unansweredCount")
+        .innerHTML =
+        "⚪ Unanswered: " + unanswered;
+
+    document.getElementById("examStatus")
+        .innerHTML =
+        passed
+        ? "✅ PASSED"
+        : "❌ FAILED";
+}
+
+if(questions.length > 0){
+    loadQuestion();
+}
+
+</script>
+
+</body>
+</html>

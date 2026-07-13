@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISTQB Security Tester</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.exam-container{
+    width:1400px;
+    height:95vh;
+    background:white;
+    border:1px solid #ccc;
+    display:flex;
+    flex-direction:column;
+}
+
+.top-bar{
+    background:#0c4d80;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.question-header{
+    background:#eaeaea;
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+}
+
+.question-area{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.question-title{
+    font-size:19px;
+    line-height:1.8;
+    white-space:pre-line;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.option{
+    display:block;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.navigation{
+    padding:15px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+}
+
+.left-buttons,
+.right-buttons{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.blue{
+    background:#0b5ea8;
+}
+
+.orange{
+    background:#f1ad43;
+}
+
+.dark{
+    background:#16344f;
+}
+
+.answer-box{
+    margin-top:25px;
+    padding:15px;
+    background:#fff8d6;
+    border:1px solid #d8c46b;
+    display:none;
+    font-weight:bold;
+}
+
+#resultScreen{
+    display:none;
+    padding:40px;
+    text-align:center;
+}
+
+#finalScore{
+    font-size:60px;
+    color:#0c4d80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <div class="top-bar">
+        <div>ISTQB Security Tester</div>
+        <div id="counter"></div>
+    </div>
+
+    <div class="question-header">
+        Mock Exam
+    </div>
+
+    <div class="question-area">
+
+        <div id="question" class="question-title"></div>
+
+        <div id="options"></div>
+
+        <div id="answerBox" class="answer-box"></div>
+
+    </div>
+
+    <div id="resultScreen">
+
+        <h1>ISTQB Security Tester</h1>
+
+        <h2>Exam Result</h2>
+
+        <br>
+
+        <div id="finalScore"></div>
+
+        <br>
+
+        <h3 id="correctCount"></h3>
+
+        <h3 id="incorrectCount"></h3>
+
+        <h3 id="answeredCount"></h3>
+
+        <h3 id="unansweredCount"></h3>
+
+        <br>
+
+        <h2 id="examStatus"></h2>
+
+    </div>
+
+    <div class="navigation">
+
+        <div class="left-buttons">
+
+            <button class="blue"
+                    onclick="previousQuestion()">
+                ◀ Previous
+            </button>
+
+            <button class="blue"
+                    onclick="nextQuestion()">
+                Next ▶
+            </button>
+
+        </div>
+
+        <div class="right-buttons">
+
+            <button class="orange"
+                    onclick="showAnswer()">
+                Show Answer
+            </button>
+
+            <button class="dark"
+                    onclick="saveSession()">
+                Save Session
+            </button>
+
+            <button class="dark"
+                    onclick="endExam()">
+                End Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PEGAR AQUÍ TU ARRAY QUESTIONS */
+
+const questions = [
+
+
+{
+id:201,
+question:`Ein Unternehmen plant Sicherheitstests für eine neue Webanwendung.
+
+Welcher Nutzen von Sicherheitstests wird im Syllabus ausdrücklich hervorgehoben?`,
+options:[
+"Nachweis, dass niemals Sicherheitsvorfälle auftreten werden",
+"Vollständige Eliminierung aller Risiken",
+"Identifikation von Schwachstellen und Unterstützung der Risikominderung",
+"Automatische Einhaltung aller Gesetze"
+],
+correct:2
+},
+
+{
+id:202,
+question:`Welche Aussage beschreibt den Zweck von Sicherheitstests am besten?`,
+options:[
+"Sicherheitstests zeigen, ob Sicherheitsanforderungen erfüllt wurden",
+"Sicherheitstests garantieren die Sicherheit eines Systems",
+"Sicherheitstests ersetzen Audits",
+"Sicherheitstests eliminieren die Notwendigkeit von Firewalls"
+],
+correct:0
+},
+
+{
+id:203,
+question:`Ein Unternehmen lässt regelmäßig Schwachstellentests durchführen.
+
+Welcher zusätzliche Vorteil wird im Syllabus genannt?`,
+options:[
+"Leistungssteigerung der Anwendung",
+"Nachweis angemessener Sorgfalt bei rechtlichen Fragestellungen",
+"Reduzierung der Entwicklungszeit",
+"Verzicht auf Dokumentation"
+],
+correct:1
+},
+
+{
+id:204,
+question:`Welche Aussage zum Unternehmenskontext ist korrekt?`,
+options:[
+"Sicherheit lässt sich nachträglich in Software einbauen",
+"Sicherheitstests sind unabhängig vom Entwicklungslebenszyklus",
+"Sicherheit muss während des gesamten Lebenszyklus berücksichtigt werden",
+"Sicherheit betrifft nur Produktivsysteme"
+],
+correct:2
+},
+
+{
+id:205,
+question:`Ein Projekt hat nur begrenzte Ressourcen.
+
+Welcher Faktor bestimmt laut Syllabus maßgeblich den Umfang der Sicherheitstests?`,
+options:[
+"Geschäftliche Sicherheitsrisiken",
+"Anzahl der Entwickler",
+"Größe des Testteams",
+"Anzahl der Dokumente"
+],
+correct:0
+},
+
+{
+id:206,
+question:`Warum müssen die Ziele von Sicherheitstests mit der Sicherheitsrichtlinie des Unternehmens abgestimmt sein?`,
+options:[
+"Damit nur autorisierte und relevante Tests durchgeführt werden",
+"Damit Sicherheitsrichtlinien ersetzt werden können",
+"Damit weniger Testfälle nötig sind",
+"Damit Audits entfallen"
+],
+correct:0
+},
+
+{
+id:207,
+question:`Ein Sicherheitstestziel lautet:
+
+„Nachweis, dass alle Eingabefelder gegen SQL-Injection geschützt sind.“
+
+Auf welcher Grundlage wurde dieses Ziel hauptsächlich definiert?`,
+options:[
+"Benutzerfreundlichkeit",
+"Bekannte Schwachstellen",
+"Projektkosten",
+"Hardwareanforderungen"
+],
+correct:1
+},
+
+{
+id:208,
+question:`Welche Aussage beschreibt den Unterschied zwischen Information Assurance (IA) und Sicherheitstests am besten?`,
+options:[
+"Beide Begriffe sind identisch",
+"Information Assurance ist enger gefasst als Sicherheitstests",
+"Information Assurance ist breiter gefasst als Sicherheitstests",
+"Sicherheitstests ersetzen Information Assurance"
+],
+correct:2
+},
+
+{
+id:209,
+question:`Ein Unternehmen verarbeitet hochsensible Gesundheitsdaten.
+
+Welche Auswirkung sollte dies auf die Sicherheitstestziele haben?`,
+options:[
+"Größerer Umfang und höhere Überdeckung",
+"Geringerer Testumfang",
+"Ausschließlich funktionale Tests",
+"Verzicht auf Penetrationstests"
+],
+correct:0
+},
+
+{
+id:210,
+question:`Welche Aussage zu Sicherheitstestzielen ist laut Syllabus korrekt?`,
+options:[
+"Sie sollten sich direkt auf Assets, Risiken und Schutzmaßnahmen beziehen",
+"Sie sollten möglichst allgemein formuliert werden",
+"Sie beschreiben nur die Testumgebung",
+"Sie ersetzen Sicherheitsanforderungen"
+],
+correct:0
+},
+
+{
+id:211,
+question:`Bei der Definition einer Sicherheitstestvorgehensweise sollte welcher Faktor berücksichtigt werden?`,
+options:[
+"Lieblingswerkzeuge des Testers",
+"Technische Umgebung und eingesetzte Technologien",
+"Urlaubsplanung",
+"Marketingstrategie"
+],
+correct:1
+},
+
+{
+id:212,
+question:`Ein Unternehmen testet eine mobile Anwendung und ein Mainframe-System.
+
+Welche Schlussfolgerung entspricht dem Syllabus?`,
+options:[
+"Dieselben Sicherheitstestvorgehensweisen sind immer ausreichend",
+"Betriebssysteme bestimmen allein die Tests",
+"COTS-Produkte benötigen keine Sicherheitstests",
+"Unterschiedliche Technologien können unterschiedliche Testvorgehensweisen erfordern"
+],
+correct:3
+},
+
+{
+id:213,
+question:`Warum könnten webbasierte Anwendungen andere Sicherheitstestansätze benötigen als Mainframe-Systeme?`,
+options:[
+"Weil Testwerkzeuge unterschiedlich teuer sind",
+"Weil sie unterschiedliche typische Schwachstellen besitzen",
+"Weil Mainframes keine Sicherheitsrisiken haben",
+"Weil Webanwendungen keine Verschlüsselung nutzen"
+],
+correct:1
+},
+
+{
+id:214,
+question:`Ein Sicherheitstestkonzept hat mehrere kritische Schwachstellen in Produktion nicht erkannt.
+
+Welche mögliche Ursache nennt der Syllabus?`,
+options:[
+"Fehlende Unterstützung und Verständnis für Sicherheitstests",
+"Zu viele Testwerkzeuge",
+"Zu viele Stakeholder",
+"Zu viele Sicherheitsanforderungen"
+],
+correct:0
+},
+
+{
+id:215,
+question:`Welche Situation deutet am ehesten auf das Fehlschlagen einer Sicherheitstestvorgehensweise hin?`,
+options:[
+"Alle Testberichte wurden archiviert",
+"Eine Schwachstelle wird entdeckt",
+"Fehlende Kompetenzen verhindern wirksame Sicherheitstests",
+"Es wurden Security Reviews durchgeführt"
+],
+correct:2
+},
+
+{
+id:216,
+question:`Welcher Stakeholder sieht den größten Nutzen von Sicherheitstests im Schutz personenbezogener Daten?`,
+options:[
+"Datenschutzbeauftragter",
+"Grafikdesigner",
+"Projektcontroller",
+"Produktmanager"
+],
+correct:0
+},
+
+{
+id:217,
+question:`Welcher Nutzen von Sicherheitstests wird typischerweise von Compliance-Verantwortlichen gesehen?`,
+options:[
+"Höhere Performance",
+"Einhaltung von gesetzlichen und internen Vorgaben",
+"Reduzierung von Hardwarekosten",
+"Verbesserung der Benutzeroberfläche"
+],
+correct:1
+},
+
+{
+id:218,
+question:`Welcher Nutzen von Sicherheitstests ist für die Geschäftsleitung besonders relevant?`,
+options:[
+"Schutz des Unternehmens",
+"Vereinfachung der Programmierung",
+"Reduzierung der Dokumentation",
+"Steigerung der Browserkompatibilität"
+],
+correct:0
+},
+
+{
+id:219,
+question:`Welche Metrik eignet sich laut Syllabus zur Optimierung von Sicherheitstestpraktiken?`,
+options:[
+"Anzahl installierter Browser",
+"Anzahl Entwickler",
+"Überdeckungsgrad von Sicherheitsrisiken durch Tests",
+"Anzahl Meetings"
+],
+correct:2
+},
+
+{
+id:220,
+question:`Ein Unternehmen möchte beurteilen, ob seine Sicherheitstestpraktiken verbessert werden müssen.
+
+Welche Information ist besonders hilfreich?`,
+options:[
+"Farbschema der Anwendung",
+"Wirksamkeit früherer Sicherheitstests",
+"Anzahl der Drucker",
+"Alter der Entwickler"
+],
+correct:1
+}
+
+];
+
+let currentQuestion = 0;
+
+let userAnswers =
+    new Array(questions.length).fill(null);
+
+function saveCurrentAnswer(){
+
+    const selected =
+        document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+    if(selected){
+
+        userAnswers[currentQuestion] =
+            parseInt(selected.value);
+    }
+}
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("counter").innerHTML =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("question").innerText =
+        q.question;
+
+    let html = "";
+
+    q.options.forEach((option,index)=>{
+
+        const checked =
+            userAnswers[currentQuestion] === index
+            ? "checked"
+            : "";
+
+        html += `
+        <label class="option">
+
+            <input
+                type="radio"
+                name="answer"
+                value="${index}"
+                ${checked}>
+
+            ${String.fromCharCode(65+index)}.
+            ${option}
+
+        </label>`;
+    });
+
+    document.getElementById("options").innerHTML =
+        html;
+
+    document.getElementById("answerBox").style.display =
+        "none";
+}
+
+function nextQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion < questions.length-1){
+
+        currentQuestion++;
+
+        loadQuestion();
+    }
+}
+
+function previousQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        loadQuestion();
+    }
+}
+
+function showAnswer(){
+
+    const q = questions[currentQuestion];
+
+    const letter =
+        String.fromCharCode(
+            65 + q.correct
+        );
+
+    document.getElementById("answerBox")
+        .style.display = "block";
+
+    document.getElementById("answerBox")
+        .innerHTML =
+        "✅ Correct Answer: " + letter;
+}
+
+function saveSession(){
+
+    localStorage.setItem(
+        "currentQuestion",
+        currentQuestion
+    );
+
+    localStorage.setItem(
+        "userAnswers",
+        JSON.stringify(userAnswers)
+    );
+
+    alert("Session saved");
+}
+
+function endExam(){
+
+    saveCurrentAnswer();
+
+    let correct = 0;
+
+    let answered = 0;
+
+    for(let i=0;i<questions.length;i++){
+
+        if(userAnswers[i] !== null){
+
+            answered++;
+
+            if(
+                userAnswers[i] ===
+                questions[i].correct
+            ){
+                correct++;
+            }
+        }
+    }
+
+    const total =
+        questions.length;
+
+    const incorrect =
+        answered - correct;
+
+    const unanswered =
+        total - answered;
+
+    const percentage =
+        (
+            (correct / total)
+            * 100
+        ).toFixed(2);
+
+    const passed =
+        percentage >= 65;
+
+    document.querySelector(".question-area")
+        .style.display = "none";
+
+    document.querySelector(".navigation")
+        .style.display = "none";
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        percentage + "%";
+
+    document.getElementById("correctCount")
+        .innerHTML =
+        "✅ Correct: " + correct;
+
+    document.getElementById("incorrectCount")
+        .innerHTML =
+        "❌ Incorrect: " + incorrect;
+
+    document.getElementById("answeredCount")
+        .innerHTML =
+        "📝 Answered: " + answered;
+
+    document.getElementById("unansweredCount")
+        .innerHTML =
+        "⚪ Unanswered: " + unanswered;
+
+    document.getElementById("examStatus")
+        .innerHTML =
+        passed
+        ? "✅ PASSED"
+        : "❌ FAILED";
+}
+
+if(questions.length > 0){
+    loadQuestion();
+}
+
+</script>
+
+</body>
+</html>

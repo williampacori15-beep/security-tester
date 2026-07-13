@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISTQB Security Tester</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.exam-container{
+    width:1400px;
+    height:95vh;
+    background:white;
+    border:1px solid #ccc;
+    display:flex;
+    flex-direction:column;
+}
+
+.top-bar{
+    background:#0c4d80;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.question-header{
+    background:#eaeaea;
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+}
+
+.question-area{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.question-title{
+    font-size:19px;
+    line-height:1.8;
+    white-space:pre-line;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.option{
+    display:block;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.navigation{
+    padding:15px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+}
+
+.left-buttons,
+.right-buttons{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.blue{
+    background:#0b5ea8;
+}
+
+.orange{
+    background:#f1ad43;
+}
+
+.dark{
+    background:#16344f;
+}
+
+.answer-box{
+    margin-top:25px;
+    padding:15px;
+    background:#fff8d6;
+    border:1px solid #d8c46b;
+    display:none;
+    font-weight:bold;
+}
+
+#resultScreen{
+    display:none;
+    padding:40px;
+    text-align:center;
+}
+
+#finalScore{
+    font-size:60px;
+    color:#0c4d80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <div class="top-bar">
+        <div>ISTQB Security Tester</div>
+        <div id="counter"></div>
+    </div>
+
+    <div class="question-header">
+        Mock Exam
+    </div>
+
+    <div class="question-area">
+
+        <div id="question" class="question-title"></div>
+
+        <div id="options"></div>
+
+        <div id="answerBox" class="answer-box"></div>
+
+    </div>
+
+    <div id="resultScreen">
+
+        <h1>ISTQB Security Tester</h1>
+
+        <h2>Exam Result</h2>
+
+        <br>
+
+        <div id="finalScore"></div>
+
+        <br>
+
+        <h3 id="correctCount"></h3>
+
+        <h3 id="incorrectCount"></h3>
+
+        <h3 id="answeredCount"></h3>
+
+        <h3 id="unansweredCount"></h3>
+
+        <br>
+
+        <h2 id="examStatus"></h2>
+
+    </div>
+
+    <div class="navigation">
+
+        <div class="left-buttons">
+
+            <button class="blue"
+                    onclick="previousQuestion()">
+                ◀ Previous
+            </button>
+
+            <button class="blue"
+                    onclick="nextQuestion()">
+                Next ▶
+            </button>
+
+        </div>
+
+        <div class="right-buttons">
+
+            <button class="orange"
+                    onclick="showAnswer()">
+                Show Answer
+            </button>
+
+            <button class="dark"
+                    onclick="saveSession()">
+                Save Session
+            </button>
+
+            <button class="dark"
+                    onclick="endExam()">
+                End Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PEGAR AQUÍ TU ARRAY QUESTIONS */
+
+const questions = [
+
+
+{
+id:501,
+question:`Ein Unternehmen hat unnötige Dienste, Standardkonten und nicht benötigte Netzwerkports deaktiviert.
+
+Welches Sicherheitskonzept wird hauptsächlich angewendet?`,
+options:[
+"Systemhärtung",
+"Datenmaskierung",
+"Autorisierung",
+"Angriffserkennung"
+],
+correct:0
+},
+
+{
+id:502,
+question:`Welches Ziel verfolgt die Systemhärtung primär?`,
+options:[
+"Verbesserung der Benutzerfreundlichkeit",
+"Reduzierung der Angriffsfläche",
+"Erhöhung der Datenmenge",
+"Beschleunigung von Backups"
+],
+correct:1
+},
+
+{
+id:503,
+question:`Während eines Audits wird festgestellt, dass mehrere unnötige Dienste auf einem Server aktiv sind.
+
+Welche Schlussfolgerung ist am angemessensten?`,
+options:[
+"Die Systemhärtung könnte unzureichend sein",
+"Die Authentifizierung ist fehlerhaft",
+"Die Verschlüsselung ist zu stark",
+"Die Datenmaskierung ist unwirksam"
+],
+correct:0
+},
+
+{
+id:504,
+question:`Welche Aussage beschreibt den Zusammenhang zwischen Authentifizierung und Autorisierung korrekt?`,
+options:[
+"Autorisierung erfolgt vor der Authentifizierung",
+"Authentifizierung bestimmt die Berechtigungen",
+"Authentifizierung bestätigt die Identität, Autorisierung bestimmt die Rechte",
+"Beide Begriffe sind synonym"
+],
+correct:2
+},
+
+{
+id:505,
+question:`Ein Benutzer meldet sich erfolgreich an, kann aber keine Gehaltsdaten einsehen.
+
+Welcher Sicherheitsmechanismus verhindert den Zugriff wahrscheinlich?`,
+options:[
+"Autorisierung",
+"Verschlüsselung",
+"Angriffserkennung",
+"Systemhärtung"
+],
+correct:0
+},
+
+{
+id:506,
+question:`Welche Aktivität testet die Wirksamkeit eines Authentifizierungsmechanismus am direktesten?`,
+options:[
+"Prüfung der Datenbankgröße",
+"Versuch einer Anmeldung mit ungültigen Zugangsdaten",
+"Analyse von Geschäftsprozessen",
+"Betrachtung des Netzwerkdesigns"
+],
+correct:1
+},
+
+{
+id:507,
+question:`Ein Sicherheitstester überprüft, ob Passwörter den definierten Mindestanforderungen entsprechen.
+
+Welcher Bereich wird primär getestet?`,
+options:[
+"Datenmaskierung",
+"Authentifizierung",
+"Malware-Erkennung",
+"Firewall-Regeln"
+],
+correct:1
+},
+
+{
+id:508,
+question:`Welche Aussage über Verschlüsselung ist korrekt?`,
+options:[
+"Verschlüsselung dient hauptsächlich der Vertraulichkeit",
+"Verschlüsselung ersetzt Authentifizierung",
+"Verschlüsselung verhindert alle Angriffe",
+"Verschlüsselung erhöht die Verfügbarkeit"
+],
+correct:0
+},
+
+{
+id:509,
+question:`Ein Unternehmen speichert sensible Daten auf mobilen Geräten.
+
+Welche Maßnahme reduziert die Auswirkungen eines Geräteverlustes am effektivsten?`,
+options:[
+"Datenklassifizierung",
+"Firewall-Optimierung",
+"Verschlüsselung der gespeicherten Daten",
+"Netzwerksegmentierung"
+],
+correct:2
+},
+
+{
+id:510,
+question:`Welcher Test liefert den besten Nachweis für die Wirksamkeit einer implementierten Verschlüsselung?`,
+options:[
+"Überprüfung, ob Daten ohne Schlüssel lesbar sind",
+"Messung der CPU-Auslastung",
+"Prüfung der Benutzeroberfläche",
+"Analyse der Benutzerrollen"
+],
+correct:0
+},
+
+{
+id:511,
+question:`Welche Hauptfunktion erfüllt eine Firewall?`,
+options:[
+"Daten verschlüsseln",
+"Netzwerkverkehr filtern und kontrollieren",
+"Benutzer authentifizieren",
+"Viren signieren"
+],
+correct:1
+},
+
+{
+id:512,
+question:`Ein Sicherheitstester überprüft Firewall-Regeln.
+
+Welcher Testfall ist besonders relevant?`,
+options:[
+"Prüfung, ob unerlaubte Verbindungen blockiert werden",
+"Überprüfung der Passwortstärke",
+"Messung der Bildschirmauflösung",
+"Prüfung von Datenmaskierungsregeln"
+],
+correct:0
+},
+
+{
+id:513,
+question:`Warum werden Netzwerkzonen eingesetzt?`,
+options:[
+"Zur Verbesserung von Farbschemata",
+"Zur Trennung von Systemen mit unterschiedlichen Sicherheitsanforderungen",
+"Zur Komprimierung von Daten",
+"Zur Vereinfachung der Benutzerverwaltung"
+],
+correct:1
+},
+
+{
+id:514,
+question:`Welches Ziel verfolgt ein Angriffserkennungssystem (IDS) hauptsächlich?`,
+options:[
+"Erkennen verdächtiger Aktivitäten",
+"Blockieren aller Netzwerkkommunikation",
+"Durchführen von Backups",
+"Maskieren personenbezogener Daten"
+],
+correct:0
+},
+
+{
+id:515,
+question:`Welche Aussage über IDS-Werkzeuge ist korrekt?`,
+options:[
+"Sie verhindern jeden Angriff automatisch",
+"Sie dienen primär der Erkennung verdächtiger Ereignisse",
+"Sie ersetzen Firewalls",
+"Sie verwalten Benutzerkonten"
+],
+correct:1
+},
+
+{
+id:516,
+question:`Welcher Test zeigt die Wirksamkeit eines IDS am direktesten?`,
+options:[
+"Auslösen bekannter Angriffsmuster und Bewertung der Erkennung",
+"Prüfung der Lizenzbedingungen",
+"Vergleich der Serverhardware",
+"Messung der Datenbankgröße"
+],
+correct:0
+},
+
+{
+id:517,
+question:`Ein Malware-Scanner erkennt eine bekannte Schadsoftware nicht.
+
+Welche Schlussfolgerung ist am wahrscheinlichsten?`,
+options:[
+"Die Datenmaskierung ist fehlerhaft",
+"Der Scanner ist möglicherweise nicht wirksam oder aktuell",
+"Die Firewall arbeitet korrekt",
+"Die Verschlüsselung ist unzureichend"
+],
+correct:1
+},
+
+{
+id:518,
+question:`Welches Ziel verfolgt die Datenmaskierung?`,
+options:[
+"Sicherstellen, dass produktive Daten in Testumgebungen geschützt werden",
+"Beschleunigung von Datenbanken",
+"Verbesserung der Authentifizierung",
+"Verhinderung von DoS-Angriffen"
+],
+correct:0
+},
+
+{
+id:519,
+question:`Welche Aussage über Datenmaskierung entspricht dem Syllabus am ehesten?`,
+options:[
+"Sie ersetzt Verschlüsselung vollständig",
+"Sie schützt sensible Informationen vor Offenlegung in Testumgebungen",
+"Sie dient nur der Performanceoptimierung",
+"Sie ist ausschließlich für Finanzdaten relevant"
+],
+correct:1
+},
+
+{
+id:520,
+question:`Ein Unternehmen investiert in Security-Awareness-Schulungen.
+
+Wie kann deren Wirksamkeit am besten bewertet werden?`,
+options:[
+"Durch Tests und Messung des sicherheitsbewussten Verhaltens",
+"Durch Austausch der Hardware",
+"Durch stärkere Verschlüsselung",
+"Durch zusätzliche Firewalls"
+],
+correct:0
+}
+
+
+];
+
+let currentQuestion = 0;
+
+let userAnswers =
+    new Array(questions.length).fill(null);
+
+function saveCurrentAnswer(){
+
+    const selected =
+        document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+    if(selected){
+
+        userAnswers[currentQuestion] =
+            parseInt(selected.value);
+    }
+}
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("counter").innerHTML =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("question").innerText =
+        q.question;
+
+    let html = "";
+
+    q.options.forEach((option,index)=>{
+
+        const checked =
+            userAnswers[currentQuestion] === index
+            ? "checked"
+            : "";
+
+        html += `
+        <label class="option">
+
+            <input
+                type="radio"
+                name="answer"
+                value="${index}"
+                ${checked}>
+
+            ${String.fromCharCode(65+index)}.
+            ${option}
+
+        </label>`;
+    });
+
+    document.getElementById("options").innerHTML =
+        html;
+
+    document.getElementById("answerBox").style.display =
+        "none";
+}
+
+function nextQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion < questions.length-1){
+
+        currentQuestion++;
+
+        loadQuestion();
+    }
+}
+
+function previousQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        loadQuestion();
+    }
+}
+
+function showAnswer(){
+
+    const q = questions[currentQuestion];
+
+    const letter =
+        String.fromCharCode(
+            65 + q.correct
+        );
+
+    document.getElementById("answerBox")
+        .style.display = "block";
+
+    document.getElementById("answerBox")
+        .innerHTML =
+        "✅ Correct Answer: " + letter;
+}
+
+function saveSession(){
+
+    localStorage.setItem(
+        "currentQuestion",
+        currentQuestion
+    );
+
+    localStorage.setItem(
+        "userAnswers",
+        JSON.stringify(userAnswers)
+    );
+
+    alert("Session saved");
+}
+
+function endExam(){
+
+    saveCurrentAnswer();
+
+    let correct = 0;
+
+    let answered = 0;
+
+    for(let i=0;i<questions.length;i++){
+
+        if(userAnswers[i] !== null){
+
+            answered++;
+
+            if(
+                userAnswers[i] ===
+                questions[i].correct
+            ){
+                correct++;
+            }
+        }
+    }
+
+    const total =
+        questions.length;
+
+    const incorrect =
+        answered - correct;
+
+    const unanswered =
+        total - answered;
+
+    const percentage =
+        (
+            (correct / total)
+            * 100
+        ).toFixed(2);
+
+    const passed =
+        percentage >= 65;
+
+    document.querySelector(".question-area")
+        .style.display = "none";
+
+    document.querySelector(".navigation")
+        .style.display = "none";
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        percentage + "%";
+
+    document.getElementById("correctCount")
+        .innerHTML =
+        "✅ Correct: " + correct;
+
+    document.getElementById("incorrectCount")
+        .innerHTML =
+        "❌ Incorrect: " + incorrect;
+
+    document.getElementById("answeredCount")
+        .innerHTML =
+        "📝 Answered: " + answered;
+
+    document.getElementById("unansweredCount")
+        .innerHTML =
+        "⚪ Unanswered: " + unanswered;
+
+    document.getElementById("examStatus")
+        .innerHTML =
+        passed
+        ? "✅ PASSED"
+        : "❌ FAILED";
+}
+
+if(questions.length > 0){
+    loadQuestion();
+}
+
+</script>
+
+</body>
+</html>

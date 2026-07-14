@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISTQB Security Tester</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f0f0f0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.exam-container{
+    width:1400px;
+    height:95vh;
+    background:white;
+    border:1px solid #ccc;
+    display:flex;
+    flex-direction:column;
+}
+
+.top-bar{
+    background:#0c4d80;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+}
+
+.question-header{
+    background:#eaeaea;
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid #ccc;
+    font-weight:bold;
+}
+
+.question-area{
+    flex:1;
+    padding:40px;
+    overflow-y:auto;
+}
+
+.question-title{
+    font-size:19px;
+    line-height:1.8;
+    white-space:pre-line;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.option{
+    display:block;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+.navigation{
+    padding:15px;
+    border-top:1px solid #ccc;
+    display:flex;
+    justify-content:space-between;
+}
+
+.left-buttons,
+.right-buttons{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    border:none;
+    padding:10px 18px;
+    color:white;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.blue{
+    background:#0b5ea8;
+}
+
+.orange{
+    background:#f1ad43;
+}
+
+.dark{
+    background:#16344f;
+}
+
+.answer-box{
+    margin-top:25px;
+    padding:15px;
+    background:#fff8d6;
+    border:1px solid #d8c46b;
+    display:none;
+    font-weight:bold;
+}
+
+#resultScreen{
+    display:none;
+    padding:40px;
+    text-align:center;
+}
+
+#finalScore{
+    font-size:60px;
+    color:#0c4d80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="exam-container">
+
+    <div class="top-bar">
+        <div>ISTQB Security Tester</div>
+        <div id="counter"></div>
+    </div>
+
+    <div class="question-header">
+        Mock Exam
+    </div>
+
+    <div class="question-area">
+
+        <div id="question" class="question-title"></div>
+
+        <div id="options"></div>
+
+        <div id="answerBox" class="answer-box"></div>
+
+    </div>
+
+    <div id="resultScreen">
+
+        <h1>ISTQB Security Tester</h1>
+
+        <h2>Exam Result</h2>
+
+        <br>
+
+        <div id="finalScore"></div>
+
+        <br>
+
+        <h3 id="correctCount"></h3>
+
+        <h3 id="incorrectCount"></h3>
+
+        <h3 id="answeredCount"></h3>
+
+        <h3 id="unansweredCount"></h3>
+
+        <br>
+
+        <h2 id="examStatus"></h2>
+
+    </div>
+
+    <div class="navigation">
+
+        <div class="left-buttons">
+
+            <button class="blue"
+                    onclick="previousQuestion()">
+                ◀ Previous
+            </button>
+
+            <button class="blue"
+                    onclick="nextQuestion()">
+                Next ▶
+            </button>
+
+        </div>
+
+        <div class="right-buttons">
+
+            <button class="orange"
+                    onclick="showAnswer()">
+                Show Answer
+            </button>
+
+            <button class="dark"
+                    onclick="saveSession()">
+                Save Session
+            </button>
+
+            <button class="dark"
+                    onclick="endExam()">
+                End Exam
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* PEGAR AQUÍ TU ARRAY QUESTIONS */
+
+const questions = [
+
+
+{
+id:701,
+question:`Während eines Security Tests werden mehrere kritische Schwachstellen gefunden.
+
+Welcher Aspekt sollte bei der Auswertung zuerst betrachtet werden?`,
+options:[
+"Art und potenzielle Auswirkungen der Schwachstellen",
+"Anzahl der verwendeten Testwerkzeuge",
+"Browser-Version der Tester",
+"Anzahl der Projektmitarbeiter"
+],
+correct:0
+},
+
+{
+id:702,
+question:`Ein Sicherheitstester hat eine Schwachstelle dokumentiert.
+
+Welche Information gehört laut Syllabus typischerweise in einen Security Defect Report?`,
+options:[
+"Persönliche Meinung des Testers",
+"Lieblingswerkzeug des Testers",
+"Art der Sicherheitsschwachstelle",
+"Marketingstrategie des Projekts"
+],
+correct:2
+},
+
+{
+id:703,
+question:`Welche zusätzliche Information sollte neben der Schwachstelle selbst dokumentiert werden?`,
+options:[
+"Potenzielles Schadensausmaß",
+"Urlaubsplanung des Teams",
+"Anzahl der Meetings",
+"Version der Textverarbeitung"
+],
+correct:0
+},
+
+{
+id:704,
+question:`Warum sollten Sicherheitstestergebnisse häufig vertraulich behandelt werden?`,
+options:[
+"Sie enthalten oft Informationen über ausnutzbare Schwachstellen",
+"Sie enthalten keine relevanten Informationen",
+"Sie sind nur für Entwickler verständlich",
+"Sie vergrößern die Datenbank"
+],
+correct:0
+},
+
+{
+id:705,
+question:`Ein Unternehmen entscheidet, erkannte Schwachstellen nicht sofort zu beheben.
+
+Warum wird dadurch die Vertraulichkeit von Testergebnissen besonders wichtig?`,
+options:[
+"Die Testergebnisse könnten von Angreifern missbraucht werden",
+"Die Performance könnte sinken",
+"Die Anzahl der Testfälle steigt",
+"Die Datenbank wird größer"
+],
+correct:0
+},
+
+{
+id:706,
+question:`Welche Zielgruppe interessiert sich typischerweise am meisten für die geschäftlichen Auswirkungen einer Sicherheitsschwachstelle?`,
+options:[
+"Das Management",
+"Der Compiler",
+"Die Datenbank",
+"Der Webbrowser"
+],
+correct:0
+},
+
+{
+id:707,
+question:`Welche Aussage über Security-Test-Statusberichte ist am zutreffendsten?`,
+options:[
+"Sie dienen der Information über Risiken, Fortschritt und Ergebnisse",
+"Sie ersetzen Sicherheitstests",
+"Sie werden nur nach Projektende erstellt",
+"Sie enthalten ausschließlich technische Logdateien"
+],
+correct:0
+},
+
+{
+id:708,
+question:`Ein Sicherheitstester analysiert mehrere Zwischenberichte.
+
+Welches Ziel verfolgt diese Aktivität hauptsächlich?`,
+options:[
+"Erkennen von Trends und Risiken während des Testverlaufs",
+"Ersetzen der Testplanung",
+"Verkürzen von Testfällen",
+"Verbessern der Netzwerkleistung"
+],
+correct:0
+},
+
+{
+id:709,
+question:`Welcher Aspekt sollte in einem Security-Abschlussbericht besonders hervorgehoben werden?`,
+options:[
+"Verbleibende Risiken und deren Auswirkungen",
+"Bildschirmauflösung der Testumgebung",
+"Anzahl installierter Drucker",
+"Version des Betriebssystems"
+],
+correct:0
+},
+
+{
+id:710,
+question:`Welche Aussage beschreibt den Hauptzweck der Auswertung von Sicherheitstests am besten?`,
+options:[
+"Bewertung gefundener Schwachstellen und Unterstützung von Entscheidungen zur Risikobehandlung",
+"Erhöhung der Testautomatisierung",
+"Vermeidung von Dokumentation",
+"Optimierung der Hardware"
+],
+correct:0
+}
+
+];
+
+let currentQuestion = 0;
+
+let userAnswers =
+    new Array(questions.length).fill(null);
+
+function saveCurrentAnswer(){
+
+    const selected =
+        document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+    if(selected){
+
+        userAnswers[currentQuestion] =
+            parseInt(selected.value);
+    }
+}
+
+function loadQuestion(){
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("counter").innerHTML =
+        `Question ${currentQuestion+1} of ${questions.length}`;
+
+    document.getElementById("question").innerText =
+        q.question;
+
+    let html = "";
+
+    q.options.forEach((option,index)=>{
+
+        const checked =
+            userAnswers[currentQuestion] === index
+            ? "checked"
+            : "";
+
+        html += `
+        <label class="option">
+
+            <input
+                type="radio"
+                name="answer"
+                value="${index}"
+                ${checked}>
+
+            ${String.fromCharCode(65+index)}.
+            ${option}
+
+        </label>`;
+    });
+
+    document.getElementById("options").innerHTML =
+        html;
+
+    document.getElementById("answerBox").style.display =
+        "none";
+}
+
+function nextQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion < questions.length-1){
+
+        currentQuestion++;
+
+        loadQuestion();
+    }
+}
+
+function previousQuestion(){
+
+    saveCurrentAnswer();
+
+    if(currentQuestion > 0){
+
+        currentQuestion--;
+
+        loadQuestion();
+    }
+}
+
+function showAnswer(){
+
+    const q = questions[currentQuestion];
+
+    const letter =
+        String.fromCharCode(
+            65 + q.correct
+        );
+
+    document.getElementById("answerBox")
+        .style.display = "block";
+
+    document.getElementById("answerBox")
+        .innerHTML =
+        "✅ Correct Answer: " + letter;
+}
+
+function saveSession(){
+
+    localStorage.setItem(
+        "currentQuestion",
+        currentQuestion
+    );
+
+    localStorage.setItem(
+        "userAnswers",
+        JSON.stringify(userAnswers)
+    );
+
+    alert("Session saved");
+}
+
+function endExam(){
+
+    saveCurrentAnswer();
+
+    let correct = 0;
+
+    let answered = 0;
+
+    for(let i=0;i<questions.length;i++){
+
+        if(userAnswers[i] !== null){
+
+            answered++;
+
+            if(
+                userAnswers[i] ===
+                questions[i].correct
+            ){
+                correct++;
+            }
+        }
+    }
+
+    const total =
+        questions.length;
+
+    const incorrect =
+        answered - correct;
+
+    const unanswered =
+        total - answered;
+
+    const percentage =
+        (
+            (correct / total)
+            * 100
+        ).toFixed(2);
+
+    const passed =
+        percentage >= 65;
+
+    document.querySelector(".question-area")
+        .style.display = "none";
+
+    document.querySelector(".navigation")
+        .style.display = "none";
+
+    document.getElementById("resultScreen")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerHTML =
+        percentage + "%";
+
+    document.getElementById("correctCount")
+        .innerHTML =
+        "✅ Correct: " + correct;
+
+    document.getElementById("incorrectCount")
+        .innerHTML =
+        "❌ Incorrect: " + incorrect;
+
+    document.getElementById("answeredCount")
+        .innerHTML =
+        "📝 Answered: " + answered;
+
+    document.getElementById("unansweredCount")
+        .innerHTML =
+        "⚪ Unanswered: " + unanswered;
+
+    document.getElementById("examStatus")
+        .innerHTML =
+        passed
+        ? "✅ PASSED"
+        : "❌ FAILED";
+}
+
+if(questions.length > 0){
+    loadQuestion();
+}
+
+</script>
+
+</body>
+</html>

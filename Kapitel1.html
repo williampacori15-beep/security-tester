@@ -220,17 +220,259 @@ button{
 const questions = [
 
 
+[
 {
-id:101,
-question:"Für ein Unternehmen wird eine Sicherheitsrisikobewertung durchgeführt. Welchen Nutzen kann diese Sicherheitsrisikobewertung für Sicherheitstester haben?",
+id:121,
+question:"Eine Sicherheitsrisikobewertung wurde bereits durchgeführt. Welchen zusätzlichen Nutzen kann sie für Sicherheitstests haben?",
 options:[
-"Sie unterstützt die Planung und Konzipierung von Sicherheitstests",
-"Sie ersetzt Sicherheitsrichtlinien und -verfahren",
-"Sie dient der Klassifizierung sensibler Daten",
-"Sie definiert Sicherheitskontrollmechanismen"
+"Sie ermöglicht die Priorisierung der am stärksten gefährdeten Bereiche",
+"Sie ersetzt Sicherheitsrichtlinien",
+"Sie ersetzt Sicherheitsaudits",
+"Sie definiert die Datenklassifizierung"
+],
+correct:0
+},
+
+{
+id:122,
+question:"Warum müssen Sicherheitsrisikobewertungen regelmäßig durchgeführt werden?",
+options:[
+"Sicherheitsrisiken und -projekte ändern sich kontinuierlich",
+"ISO 27001 fordert tägliche Risikobewertungen",
+"Assets verlieren sonst automatisch ihren Wert",
+"Sicherheitstests können nur nach einer Neubewertung durchgeführt werden"
+],
+correct:0
+},
+
+{
+id:123,
+question:"Welcher der folgenden Punkte wird im Syllabus als Beispiel für ein sensibles Asset von hohem Wert genannt?",
+options:[
+"Kundendaten",
+"WLAN-Zugangspunkt",
+"Passwort-Richtlinie",
+"VPN-Verbindung"
+],
+correct:0
+},
+
+{
+id:124,
+question:"Welcher Faktor kann zur Bestimmung des Wertes digitaler Assets herangezogen werden?",
+options:[
+"Der zukünftige Umsatz, den das Asset generieren soll",
+"Die Anzahl der eingesetzten Firewalls",
+"Die Zahl der Sicherheitstester",
+"Die Anzahl der Netzwerkzonen"
+],
+correct:0
+},
+
+{
+id:125,
+question:"Welche Stakeholdergruppe wird im Syllabus ausdrücklich als externe Perspektive einer Sicherheitsrisikobewertung genannt?",
+options:[
+"Kunden und Benutzer",
+"Entwickler",
+"Systemadministratoren",
+"Projektleiter"
+],
+correct:0
+},
+
+{
+id:126,
+question:"Welche Aufgabe gehört zur Durchführung einer Risikobewertung?",
+options:[
+"Ermittlung von Schwachstellen im Unternehmen",
+"Definition der Passwort-Richtlinie",
+"Einrichtung von Angriffserkennungssystemen",
+"Konfiguration von Firewalls"
+],
+correct:0
+},
+
+{
+id:127,
+question:"Welche Richtlinie definiert, was bei der Nutzung digitaler Ressourcen akzeptabel und nicht akzeptabel ist?",
+options:[
+"Akzeptable Nutzung",
+"Fernzugriff",
+"Passwort-Richtlinie",
+"Benutzerkontenverwaltung"
+],
+correct:0
+},
+
+{
+id:128,
+question:"Welchen Zweck verfolgt die Richtlinie 'Mindestmaß an Zugriffsrechten'?",
+options:[
+"Verhinderung unnötiger Zugriffsrechte",
+"Schutz vor Schadsoftware",
+"Regelung des Internetzugangs",
+"Klassifizierung von Daten"
+],
+correct:0
+},
+
+{
+id:129,
+question:"Welche Datenklassifizierung wird für Informationen verwendet, deren Offenlegung dem Unternehmen erheblich schaden kann?",
+options:[
+"Geheim",
+"Vertraulich",
+"Öffentlich",
+"Streng vertraulich"
+],
+correct:0
+},
+
+{
+id:130,
+question:"Welche Richtlinie beschreibt, wie bei einem sicherheitsrelevanten Störfall reagiert werden muss?",
+options:[
+"Reaktion auf sicherheitsrelevante Störfälle",
+"Audit-Richtlinie",
+"Netzwerkzugriff",
+"Akzeptable Nutzung"
+],
+correct:0
+},
+
+{
+id:131,
+question:"Welche Grundlage kann laut Syllabus zur Bewertung von Sicherheitsrichtlinien und Verfahren verwendet werden?",
+options:[
+"ISO 27001",
+"TLS",
+"SSL",
+"SQL"
+],
+correct:0
+},
+
+{
+id:132,
+question:"Welche Tätigkeit führt ein Prüfer bei der Analyse von Sicherheitsrichtlinien und Verfahren durch?",
+options:[
+"Er analysiert frühere Prüfergebnisse, um Trends zu erkennen",
+"Er entwickelt neue Sicherheitsrichtlinien",
+"Er erstellt Benutzerkonten",
+"Er programmiert Kontrollmechanismen"
+],
+correct:0
+},
+
+{
+id:133,
+question:"Welche Aussage beschreibt den Unterschied zwischen Sicherheitsrichtlinien und Sicherheitsverfahren am besten?",
+options:[
+"Verfahren beschreiben die konkrete Umsetzung von Richtlinien",
+"Verfahren ersetzen Richtlinien",
+"Richtlinien beschreiben technische Details",
+"Richtlinien werden nur für Audits verwendet"
+],
+correct:0
+},
+
+{
+id:134,
+question:"Welche der folgenden Maßnahmen gehört zur Säule 'Prävention' eines Sicherheitsaudits?",
+options:[
+"Richtlinien, Verfahren und Kontrollmechanismen einsetzen",
+"Schadenshöhe berechnen",
+"Testergebnisse berichten",
+"Personenbezogene Daten klassifizieren"
+],
+correct:0
+},
+
+{
+id:135,
+question:"Welche Säule eines Sicherheitsaudits beschäftigt sich mit der Ermittlung einer Verletzung der Sicherheit oder eines Eindringens?",
+options:[
+"Erkennung",
+"Bewertung",
+"Wiederherstellung",
+"Prävention"
+],
+correct:0
+},
+
+{
+id:136,
+question:"Welche Feststellung könnte im Rahmen eines Sicherheitsaudits getroffen werden?",
+options:[
+"Inadäquates Passwort-Management",
+"Unvollständige Testautomatisierung",
+"Fehlende User Stories",
+"Unzureichende Datenmaskierung im Testfall"
+],
+correct:0
+},
+
+{
+id:137,
+question:"Was beschreibt die Risikoermittlung im Kontext der Informationssicherheit?",
+options:[
+"Den Prozess der Dokumentierung eines Risikos oder Risikobereichs",
+"Die Beseitigung von Schwachstellen",
+"Die Klassifizierung von Daten",
+"Die Durchführung von Penetrationstests"
+],
+correct:0
+},
+
+{
+id:138,
+question:"Welche Risikofaktoren werden im Syllabus ausdrücklich genannt?",
+options:[
+"Gefährdung, Schwachstelle, Schadensausmaß, Wahrscheinlichkeit und auslösende Bedingung",
+"Firewall, VPN, Malware, Passwort und Audit",
+"Authentifizierung, Autorisierung und Verschlüsselung",
+"Verfügbarkeit, Wartbarkeit und Benutzbarkeit"
+],
+correct:0
+},
+
+{
+id:139,
+question:"Welche der folgenden Optionen wird im Syllabus als Gefährdungsquelle beschrieben?",
+options:[
+"Menschliche Fehler durch Versäumnis oder fehlerhaftes Handeln",
+"Vertrauliche Daten",
+"Passwort-Richtlinie",
+"Datenklassifizierung"
+],
+correct:0
+},
+
+{
+id:140,
+question:"Welcher Faktor gehört laut Syllabus zum Konzept 'Mensch, Prozess und Technik'?",
+options:[
+"Menschen haben unterschiedliche Kompetenzstände, Einstellungen und Pläne",
+"Sicherheit wird ausschließlich durch Technik gewährleistet",
+"Prozesse können Menschen ersetzen",
+"Technik eliminiert Sicherheitsrisiken vollständig"
+],
+correct:0
+},
+
+{
+id:141,
+question:"Warum wird das Zusammenspiel von Mensch, Prozess und Technik als 'eisernes Dreieck' beschrieben?",
+options:[
+"Weil die IT-Leistungsbereitstellung und Sicherheitsarbeit leidet, wenn einer dieser Aspekte ignoriert wird",
+"Weil alle drei Aspekte denselben Stellenwert im Organigramm besitzen",
+"Weil sie unabhängig voneinander funktionieren",
+"Weil Audits nur diese drei Bereiche prüfen"
 ],
 correct:0
 }
+]
 
 ];
 

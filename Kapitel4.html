@@ -218,264 +218,328 @@ button{
 /* PEGAR AQUÍ TU ARRAY QUESTIONS */
 
 const questions = [
+{
+id:501,
+question:`Ein Unternehmen entwickelt eine Anwendung für die Verarbeitung sensibler Finanzdaten.
+
+Während der Analysephase stellt der Sicherheitstester fest, dass keine Anforderungen für Passwortkomplexität, Kontosperrung oder Sitzungsverwaltung definiert wurden.
+
+Die Projektleitung möchte mit der Implementierung beginnen, um Termine einzuhalten.
+
+Welche Maßnahme sollte zuerst empfohlen werden?`,
+options:[
+"Mit der Implementierung beginnen und Sicherheitsprobleme später beheben",
+"Die fehlenden Sicherheitsanforderungen identifizieren und ergänzen",
+"Direkt einen Penetrationstest durchführen",
+"Die Datenbank verschlüsseln"
+],
+correct:1
+},
 
 {
-id:401,
-question:`Während eines Reviews von Sicherheitsanforderungen finden Sie die Anforderung:
+id:502,
+question:`Bei einem Architektur-Review wird festgestellt, dass alle Komponenten einer Anwendung uneingeschränkten Zugriff auf sämtliche Kundendaten besitzen.
 
-"Der Zugang zum System muss sicher sein."
+Das Entwicklungsteam argumentiert, dass dies die Implementierung vereinfacht.
 
-Welches Problem liegt hauptsächlich vor?`,
+Welche Maßnahme reduziert das Risiko am wirkungsvollsten?`,
 options:[
-"Die Anforderung ist nicht testbar und zu ungenau",
-"Die Anforderung enthält zu viele technische Details",
-"Die Anforderung beschreibt eine konkrete Testmethode",
-"Die Anforderung ist zu stark auf Benutzerfreundlichkeit ausgerichtet"
+"Einführung geeigneter Zugriffskontrollen und Berechtigungsmodelle",
+"Durchführung zusätzlicher Lasttests",
+"Erhöhung der Anzahl von Testfällen",
+"Verbesserung der Systemdokumentation"
 ],
 correct:0
 },
 
 {
-id:402,
-question:`Welche Frage sollte bei der Analyse von Anforderungen aus Sicherheitssicht gestellt werden?`,
-options:[
-"Wie viele Entwickler arbeiten am Projekt?",
-"Wurden Benutzerzugriffsrechte ermittelt und dokumentiert?",
-"Welcher Browser wird verwendet?",
-"Wie groß ist die Datenbank?"
-],
-correct:1
-},
+id:503,
+question:`Eine Anwendung verarbeitet vertrauliche Kundendaten.
 
-{
-id:403,
-question:`Ein Requirements-Dokument enthält keine Angaben zu Datenschutzanforderungen.
+Bei der Analyse der Datenflüsse erkennt der Sicherheitstester, dass Benutzereingaben ungeprüft direkt in Datenbankabfragen verwendet werden.
 
-Welche Schlussfolgerung ist am angemessensten?`,
+Welche Gefährdung sollte als besonders kritisch betrachtet werden?`,
 options:[
-"Datenschutz ist nur während des Systemtests relevant",
-"Die Anforderungen können aus Sicherheitssicht unvollständig sein",
-"Datenschutz wird durch Firewalls automatisch erfüllt",
-"Datenschutz betrifft ausschließlich Administratoren"
-],
-correct:1
-},
-
-{
-id:404,
-question:`Welche Aussage beschreibt die Rolle des Sicherheitstestens im Lebenszyklus am besten?`,
-options:[
-"Sicherheit wird am Ende des Projekts getestet",
-"Sicherheit wird primär durch Penetrationstests erreicht",
-"Sicherheit sollte während des gesamten Lebenszyklus berücksichtigt werden",
-"Sicherheit entsteht automatisch durch sichere Frameworks"
+"Verlust von Backups",
+"Unzureichende Rollenverwaltung",
+"SQL-Injection",
+"Veraltete Betriebssysteme"
 ],
 correct:2
 },
 
 {
-id:405,
-question:`Warum sollten Sicherheitsanforderungen möglichst früh definiert werden?`,
+id:504,
+question:`Ein Team führt erfolgreiche funktionale Sicherheitstests durch.
+
+Kurz vor dem Produktivbetrieb werden mehrere Bibliotheken und Frameworks aktualisiert.
+
+Welche Aktivität sollte als Nächstes priorisiert werden?`,
 options:[
-"Um Schwachstellen günstiger und früher zu erkennen",
-"Um Systemtests zu vermeiden",
-"Um den Wartungsaufwand zu erhöhen",
-"Um weniger Reviews durchführen zu müssen"
+"Erstellung eines neuen Projektplans",
+"Durchführung von Abnahmetests",
+"Aktualisierung der Sicherheitsrichtlinie",
+"Durchführung sicherheitsrelevanter Regressionstests"
+],
+correct:3
+},
+
+{
+id:505,
+question:`Während eines Penetrationstests kann sich ein Benutzer anmelden und anschließend auf Datensätze anderer Benutzer zugreifen.
+
+Authentifizierung funktioniert ordnungsgemäß.
+
+Welcher Sicherheitsbereich weist wahrscheinlich die größte Schwäche auf?`,
+options:[
+"Autorisierung",
+"Verschlüsselung",
+"Verfügbarkeit",
+"Datensicherung"
 ],
 correct:0
 },
 
 {
-id:406,
-question:`Während der Entwurfsphase untersucht ein Sicherheitstester die Architektur einer Anwendung.
+id:506,
+question:`Ein Unternehmen verfügt über begrenzte Ressourcen für Sicherheitstests.
 
-Welches Ziel wird hauptsächlich verfolgt?`,
+Die Anwendung verarbeitet Kreditkartendaten, Gesundheitsdaten und öffentliche Marketinginformationen.
+
+Welche Vorgehensweise entspricht am ehesten einem risikobasierten Ansatz?`,
 options:[
-"Bewertung möglicher Sicherheitsmängel im Design",
-"Messung der Performance",
-"Erstellung von Benutzerhandbüchern",
-"Planung der Bereitstellung"
+"Alle Funktionen gleich intensiv testen",
+"Zuerst die Bereiche mit dem höchsten Geschäftsrisiko testen",
+"Nur öffentliche Informationen testen",
+"Nur automatisierte Tests durchführen"
+],
+correct:1
+},
+
+{
+id:507,
+question:`Während eines Code-Reviews werden mehrere Stellen gefunden, an denen Fehlermeldungen sensible technische Details enthalten.
+
+Die Anwendung wird über das Internet erreichbar sein.
+
+Welches Risiko entsteht dadurch hauptsächlich?`,
+options:[
+"Höherer Speicherverbrauch",
+"Unterstützung von Angriffen durch Informationsgewinnung",
+"Verlust der Datenintegrität",
+"Verlangsamung von Regressionstests"
+],
+correct:1
+},
+
+{
+id:508,
+question:`Ein Unternehmen verwendet eine Open-Source-Komponente.
+
+Eine neue kritische Schwachstelle wird öffentlich bekannt gemacht.
+
+Die Komponente wird in mehreren produktiven Systemen eingesetzt.
+
+Welche Maßnahme sollte zuerst erfolgen?`,
+options:[
+"Bewertung der Betroffenheit und der damit verbundenen Risiken",
+"Durchführung von Lasttests",
+"Erstellung neuer Benutzerkonten",
+"Überarbeitung der Datenklassifizierung"
 ],
 correct:0
 },
 
 {
-id:407,
-question:`Welcher Grundsatz aus dem Kapitel Entwurf wird ausdrücklich empfohlen?`,
+id:509,
+question:`Eine Anwendung soll nach drei fehlgeschlagenen Anmeldeversuchen ein Benutzerkonto sperren.
+
+Der Tester möchte diese Sicherheitsanforderung validieren.
+
+Welche Testart ist am geeignetsten?`,
 options:[
-"Erst autorisieren, danach authentifizieren",
-"Vertrauen sollte niemals vorausgesetzt werden",
-"Authentifizierung kann durch Client-Code erfolgen",
-"Steuerdaten und Nutzdaten können gemeinsam verarbeitet werden"
+"Walkthrough",
+"Funktionaler Sicherheitstest",
+"Architekturreview",
+"Audit"
 ],
 correct:1
 },
 
 {
-id:408,
-question:`Welche Aktivität ist typisch für die Implementierungsphase?`,
-options:[
-"Definition der Unternehmensstrategie",
-"Durchführung von Komponententests auf Sicherheitsaspekte",
-"Abnahme durch den Kunden",
-"Definition regulatorischer Vorgaben"
-],
-correct:1
-},
+id:510,
+question:`Ein Projekt befindet sich in einer frühen Entwurfsphase.
 
-{
-id:409,
-question:`Ein Entwickler implementiert Eingabevalidierungen gegen SQL-Injection.
+Ein Gefährdungsmodell wurde bereits erstellt.
 
-In welcher Lebenszyklusphase findet diese Aktivität hauptsächlich statt?`,
+Wie sollte dieses Modell genutzt werden?`,
 options:[
-"Anforderungen",
-"Implementierung",
-"Abnahmetest",
-"Wartung"
-],
-correct:1
-},
-
-{
-id:410,
-question:`Welche Technik hilft besonders dabei, Sicherheitsprobleme bereits während der Implementierung zu erkennen?`,
-options:[
-"Code Reviews und statische Analyse",
-"Benutzer-Abnahmetests",
-"Disaster-Recovery-Tests",
-"Migrationstests"
+"Zur Ableitung und Priorisierung von Sicherheitstests",
+"Zur Erstellung der Benutzerdokumentation",
+"Zur Definition der Projektorganisation",
+"Zur Ablösung von Sicherheitsanforderungen"
 ],
 correct:0
 },
 
 {
-id:411,
-question:`Warum sind Komponententests aus Sicherheitssicht wichtig?`,
+id:511,
+question:`Ein Sicherheitstester entdeckt während der Wartung eine Änderung am Authentifizierungsmechanismus.
+
+Die Änderung betrifft mehrere Schnittstellen.
+
+Welche Aktivität ist am wichtigsten?`,
 options:[
-"Sie prüfen Sicherheitsmechanismen auf Code-Ebene",
-"Sie ersetzen Integrationstests",
-"Sie validieren Geschäftsprozesse",
-"Sie dienen ausschließlich der Performancemessung"
+"Regressionstests der sicherheitskritischen Bereiche",
+"Erstellung eines Auditberichts",
+"Definition neuer Geschäftsziele",
+"Reduzierung des Testumfangs"
 ],
 correct:0
 },
 
 {
-id:412,
-question:`Ein Sicherheitstester analysiert die Schnittstelle zwischen Authentifizierungsmodul und Benutzerverwaltung.
+id:512,
+question:`Ein Unternehmen möchte Sicherheitsprobleme möglichst früh erkennen.
 
-Welche Teststufe ist am ehesten betroffen?`,
+Welche Aktivität liefert typischerweise den höchsten Nutzen bei den geringsten Änderungskosten?`,
 options:[
-"Komponententest",
-"Komponentenintegrationstest",
-"Abnahmetest",
-"Deployment-Test"
-],
-correct:1
-},
-
-{
-id:413,
-question:`Welche Aussage beschreibt den Schwerpunkt eines Komponentenintegrationstests?`,
-options:[
-"Überprüfung einzelner Codezeilen",
-"Überprüfung der Interaktion zwischen Komponenten",
-"Validierung der Geschäftsziele",
-"Bewertung der Benutzerfreundlichkeit"
-],
-correct:1
-},
-
-{
-id:414,
-question:`Ein Systemtest soll die korrekte Zusammenarbeit von Software, Hardware, Daten und Verfahren überprüfen.
-
-Welcher Aspekt wird dadurch besonders unterstützt?`,
-options:[
-"Ende-zu-Ende-Sicherheitsvalidierung auf Systemebene",
-"Codeoptimierung",
-"Compilerprüfung",
-"Versionierung"
+"Analyse von Sicherheitsanforderungen",
+"Penetrationstest im Produktivsystem",
+"Auswertung von Sicherheitsvorfällen",
+"Regressionstest nach der Freigabe"
 ],
 correct:0
 },
 
 {
-id:415,
-question:`Welches Beispiel entspricht am ehesten einem Ende-zu-Ende-Sicherheitstestszenario?`,
+id:513,
+question:`Ein Sicherheitstester erhält die Aufgabe, eine neue Testumgebung vorzubereiten.
+
+Die Testergebnisse sollen reproduzierbar sein.
+
+Welcher Aspekt ist dabei besonders wichtig?`,
 options:[
-"Prüfung einer einzelnen Passwortfunktion",
-"Review einer Sicherheitsrichtlinie",
-"Benutzer meldet sich an, führt Transaktionen aus und meldet sich ab",
-"Prüfung eines Datenbankindexes"
+"Verwendung derselben Datenklassifizierung",
+"Reproduzierbarkeit der Testumgebung",
+"Größe des Projektteams",
+"Nutzung aktueller Präsentationsvorlagen"
+],
+correct:1
+},
+
+{
+id:514,
+question:`Während eines Architekturreviews wird festgestellt, dass sensible Daten zwischen Systemkomponenten unverschlüsselt übertragen werden.
+
+Die Implementierung hat noch nicht begonnen.
+
+Welche Entscheidung ist am sinnvollsten?`,
+options:[
+"Änderung der Architektur vor der Implementierung",
+"Verzicht auf Sicherheitstests",
+"Durchführung eines Abnahmetests",
+"Einsatz zusätzlicher Lasttests"
+],
+correct:0
+},
+
+{
+id:515,
+question:`Ein Unternehmen hat bereits zahlreiche Sicherheitstests durchgeführt.
+
+Allerdings wurden Ergebnisse weder dokumentiert noch ausgewertet.
+
+Die Unternehmensleitung fragt nach dem Nutzen weiterer Tests.
+
+Was sollte zuerst erfolgen?`,
+options:[
+"Mehr Penetrationstests durchführen",
+"Neue Sicherheitswerkzeuge kaufen",
+"Ergebnisse analysieren und den Nutzen anhand eines Business Case darstellen",
+"Die Anzahl der Tester verdoppeln"
 ],
 correct:2
 },
 
 {
-id:416,
-question:`Welche Aussage zu Abnahmetests ist korrekt?`,
+id:516,
+question:`Während eines Tests wird festgestellt, dass lange Eingaben Speicherbereiche überschreiben können.
+
+Der Fehler wurde während einer strukturellen Analyse gefunden.
+
+Welche Art von Schwachstelle liegt am ehesten vor?`,
 options:[
-"Sie dienen primär dem Auffinden von Programmierfehlern",
-"Sie prüfen, ob Sicherheitsanforderungen aus Nutzersicht erfüllt werden",
-"Sie ersetzen Systemtests",
-"Sie fokussieren ausschließlich Performance"
+"Cross-Site-Scripting",
+"Pufferüberlauf",
+"Schwache Passwort-Richtlinie",
+"Fehlende Datensicherung"
 ],
 correct:1
 },
 
 {
-id:417,
-question:`Ein Kunde möchte sicherstellen, dass nur berechtigte Benutzer Kundendaten anzeigen können.
+id:517,
+question:`Ein Unternehmen möchte nachweisen, dass nur berechtigte Benutzer auf vertrauliche Daten zugreifen können.
 
-In welcher Teststufe wird dies typischerweise endgültig bestätigt?`,
+Welcher Sicherheitsbereich sollte vorrangig getestet werden?`,
 options:[
-"Abnahmetest",
-"Code Review",
-"Modultest",
-"Build-Test"
+"Autorisierung",
+"Verfügbarkeit",
+"Datensicherung",
+"Archivierung"
 ],
 correct:0
 },
 
 {
-id:418,
-question:`Welche Aussage zur Wartung entspricht dem Syllabus?`,
+id:518,
+question:`Ein Sicherheitstester erkennt, dass mehrere Sicherheitsanforderungen einander widersprechen.
+
+Die Entwicklung hat noch nicht begonnen.
+
+Welches Vorgehen ist am sinnvollsten?`,
 options:[
-"Änderungen können neue Sicherheitslücken erzeugen",
-"Nach der Freigabe sind keine Sicherheitstests mehr notwendig",
-"Regressionstests sind unnötig",
-"Wartung betrifft nur Infrastruktur"
+"Widersprüche analysieren und Anforderungen bereinigen",
+"Implementierung starten und später korrigieren",
+"Penetrationstests durchführen",
+"Architekturreviews überspringen"
 ],
 correct:0
 },
 
 {
-id:419,
-question:`Eine neue Version eines Betriebssystems wird eingeführt.
+id:519,
+question:`Eine Anwendung wurde erfolgreich getestet.
 
-Welche sicherheitsbezogene Testaktivität sollte durchgeführt werden?`,
+Nach der Freigabe wird eine kritische Schwachstelle in einem verwendeten Framework veröffentlicht.
+
+Welche Aktivität gehört nun zum Bereich Wartung von Sicherheitstests?`,
 options:[
-"Regressionstests der Sicherheitsfunktionen",
-"Nur Leistungstests",
-"Nur Dokumentationsprüfungen",
-"Keine Tests sind notwendig"
+"Bewertung neuer Risiken und Anpassung der Tests",
+"Neudefinition aller Geschäftsziele",
+"Verzicht auf weitere Tests",
+"Archivierung aller Testfälle"
 ],
 correct:0
 },
 
 {
-id:420,
-question:`Warum sind Sicherheitsregressionstests während der Wartung wichtig?`,
+id:520,
+question:`Ein Unternehmen verarbeitet medizinische Daten.
+
+Die Geschäftsführung erkennt die Bedeutung von Sicherheit, stellt jedoch weder Budget noch Ressourcen bereit.
+
+Welcher erste Schritt erhöht die Wahrscheinlichkeit, Unterstützung zu erhalten?`,
 options:[
-"Um sicherzustellen, dass bestehende Schutzmaßnahmen weiterhin funktionieren",
-"Um Sicherheitsanforderungen zu löschen",
-"Um Abnahmetests zu ersetzen",
-"Um die Projektkosten zu erhöhen"
+"Einen Business Case erstellen, der Risiken und Nutzen aufzeigt",
+"Sofortige Durchführung umfangreicher Penetrationstests",
+"Migration auf eine neue Plattform",
+"Einführung zusätzlicher Berichtsvorlagen"
 ],
 correct:0
 }
+
 
 
 ];

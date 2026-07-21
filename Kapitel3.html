@@ -220,147 +220,363 @@ button{
 const questions = [
 
 {
-id:371,
-question:"Ein Tester muss denselben Sicherheitstest nach einer Wiederherstellung der Umgebung erneut ausführen. Die Ergebnisse sollen mit dem ursprünglichen Test vergleichbar sein.\n\nWelche Eigenschaft der Sicherheitstestumgebung ist hier am wichtigsten?",
+id:301,
+question:"Warum müssen Sicherheitstests als Lebenszyklus-Aktivität verstanden werden?",
 options:[
-"Isoliert",
-"Vollständig",
-"Reproduzierbar",
-"Genehmigt"
-],
-correct:2
-},
-
-{
-id:372,
-question:"Ein Projekt verwendet Standardsoftware eines externen Herstellers. Der Sicherheitstester möchte den Quellcode analysieren.\n\nWelche Aussage beschreibt die Situation am besten?",
-options:[
-"Strukturelle Analysen sind normalerweise nicht möglich",
-"Open-Source-Werkzeuge müssen verwendet werden",
-"Penetrationstests sind nicht erlaubt",
-"Funktionale Tests sind nicht möglich"
-],
-correct:0
-},
-
-{
-id:373,
-question:"Während eines Projekts ändern sich Sicherheitsanforderungen regelmäßig. Sicherheitstests werden in jeder Iteration durchgeführt.\n\nWelcher Lebenszyklus wird beschrieben?",
-options:[
-"Sequenzieller Lebenszyklus",
-"Iterativer oder inkrementeller Lebenszyklus",
-"COTS-Lebenszyklus",
-"Abnahme-Lebenszyklus"
+"Weil Sicherheitsmaßnahmen nur in der Wartung überprüft werden können",
+"Weil Sicherheitsmaßnahmen während des gesamten Projektverlaufs implementiert und getestet werden müssen",
+"Weil Sicherheitstests ausschließlich am Projektende durchgeführt werden",
+"Weil Sicherheitsrichtlinien regelmäßig geändert werden müssen"
 ],
 correct:1
 },
 
 {
-id:374,
-question:"Ein Sicherheitstester erstellt Testdaten, Testskripte und Testszenarien für einen geplanten Sicherheitstest.\n\nIn welcher Prozessphase befindet er sich?",
+id:302,
+question:"Welche Faktoren beeinflussen die Risiken und Erfordernisse von Sicherheitstests?",
 options:[
-"Evaluierung und Abschlussberichterstattung",
-"Planung und Steuerung",
-"Abschluss der Sicherheitstests",
-"Realisierung und Ausführung"
-],
-correct:3
-},
-
-{
-id:375,
-question:"Ein Team identifiziert Sicherheitsrisiken und leitet daraus konkrete Testbedingungen ab.\n\nWelche Aktivität wird durchgeführt?",
-options:[
-"Analyse und Entwurf von Sicherheitstests",
-"Bewertung von Sicherheitstests",
-"Abschluss der Sicherheitstests",
-"Wartung von Sicherheitstests"
+"Charakter des Unternehmens, technische Umgebungen, Entwicklungsprozess und Geschäftsrisiken",
+"Anzahl der Entwickler, Budget, Standorte und Hardwarelieferanten",
+"Anzahl der Datenbanken, Browser und Firewalls",
+"Unternehmensgröße, Umsatz, Marktanteil und Betriebssystem"
 ],
 correct:0
 },
 
 {
-id:376,
-question:"Ein Projektleiter prüft, ob ausreichend Zeit für Regressionstests und die Einrichtung der Testumgebung eingeplant wurde.\n\nWelcher Bereich wird betrachtet?",
+id:303,
+question:"Welches Ziel verfolgt die Planung und Steuerung von Sicherheitstests?",
 options:[
-"Genehmigungen",
-"Aufgaben und Aufwand",
-"Review",
-"Geltungsbereich"
+"Sicherheitsrisikobewertungen abschließen",
+"Einen angemessenen Umfang definieren, der den Sicherheitsrisiken entspricht",
+"Ein Sicherheitsaudit durchführen",
+"Schwachstellen klassifizieren"
 ],
 correct:1
 },
 
 {
-id:377,
-question:"Bei einem Test werden extrem lange Eingaben verwendet, um Speicherbereiche zu überschreiben.\n\nWelches strukturelle Sicherheitsrisiko wird untersucht?",
+id:304,
+question:"Welche Aktivität gehört zur Planung und Steuerung von Sicherheitstests?",
 options:[
-"SQL-Injection",
-"Passwort-Knacken",
-"Pufferüberlauf",
-"Account Harvesting"
+"Sicherheitsrisikostufen bewerten",
+"Testskripte erstellen",
+"Metriken sowie Eingangs- und Endekriterien definieren",
+"Zwischenberichte erstellen"
 ],
 correct:2
 },
 
 {
-id:378,
-question:"Ein Prüfer bewertet, ob ein Sicherheitstest direkt auf Sicherheitsanforderungen zurückgeführt werden kann.\n\nWelche Eigenschaft wird betrachtet?",
-options:[
-"Automatisierbarkeit",
-"Zielgruppenorientierung",
-"Risikoorientierung",
-"Rückführbarkeit"
-],
-correct:3
-},
-
-{
-id:379,
-question:"Das Management möchte wissen, ob die entworfenen Sicherheitsvorkehrungen tatsächlich implementiert wurden und wie vorgesehen funktionieren.\n\nWelchem Ziel der Sicherheitstestplanung entspricht dies?",
-options:[
-"Überprüfung der Sicherheitsvorkehrungen",
-"Definition des Geltungsbereichs",
-"Bewertung der Testbarkeit",
-"Erstellung eines Auditberichts"
-],
-correct:0
-},
-
-{
-id:380,
-question:"Ein Unternehmen entscheidet, welche Teile der Anwendung getestet werden und welche bewusst ausgeschlossen werden.\n\nWelcher Bestandteil der Sicherheitstestvorgehensweise wird festgelegt?",
-options:[
-"Zeitplanung",
-"Geltungsbereich",
-"Review",
-"Genehmigung"
-],
-correct:1
-},
-
-{
-id:381,
-question:"Ein Test überprüft, ob eine Anwendung gegen SQL-Injection abgesichert ist.\n\nWelcher Kategorie gehört dieser Test an?",
-options:[
-"Strukturelles Sicherheitsrisiko",
-"Interne Gefährdung",
-"Funktionales Sicherheitsrisiko",
-"Sicherheitsaudit"
-],
-correct:2
-},
-
-{
-id:382,
-question:"Ein Unternehmen archiviert Testdaten, Testergebnisse und sensible Informationen nach Abschluss eines Projekts.\n\nWelche Phase wird durchgeführt?",
+id:305,
+question:"Ein Testmanager überwacht Fortschritt und Ergebnisse der Sicherheitstests.\n\nZu welchem Prozessschritt gehört diese Tätigkeit?",
 options:[
 "Analyse und Entwurf",
+"Evaluierung und Abschlussberichterstattung",
 "Planung und Steuerung",
-"Evaluierung",
 "Abschluss der Sicherheitstests"
 ],
+correct:2
+},
+
+{
+id:306,
+question:"Welche Informationsquellen werden im Analyse- und Entwurfsprozess überprüft?",
+options:[
+"Sicherheitsrisikobewertungen, Sicherheitsanforderungen und Sicherheitsrichtlinien",
+"Benutzerhandbücher, Installationsanleitungen und Verträge",
+"Browserkonfigurationen, Logs und Netzwerkdiagramme",
+"Releasepläne, Testdaten und Auditberichte"
+],
+correct:0
+},
+
+{
+id:307,
+question:"Worauf können Sicherheitstestbedingungen basieren?",
+options:[
+"Sicherheitsrisiken, Testzielen, Sicherheitsstandards und bekannten Schwachstellen",
+"Projektbudget, Teamgröße, Zeitplan und Hardware",
+"Auditberichten, Wartungsplänen und Organigrammen",
+"Programmiersprachen, Frameworks und Browsern"
+],
+correct:0
+},
+
+{
+id:308,
+question:"Ein Team erstellt Testdaten, Testskripte und Testszenarien.\n\nIn welcher Phase befindet sich das Team?",
+options:[
+"Abschluss der Sicherheitstests",
+"Realisierung und Ausführung",
+"Analyse und Entwurf",
+"Evaluierung"
+],
+correct:1
+},
+
+{
+id:309,
+question:"Welche Testart wird im Abschnitt Realisierung und Ausführung ausdrücklich genannt?",
+options:[
+"Funktionale Sicherheits- und Penetrationstests",
+"Usability-Tests",
+"Abnahmetests",
+"Leistungstests"
+],
+correct:0
+},
+
+{
+id:310,
+question:"Welches Ziel verfolgt die Evaluierung und Abschlussberichterstattung?",
+options:[
+"Neue Sicherheitsrichtlinien definieren",
+"Schnellstmögliche Auswertung von Tests und Dokumentation neuer Gefährdungen",
+"Testdaten erzeugen",
+"Sicherheitsanforderungen erstellen"
+],
+correct:1
+},
+
+{
+id:311,
+question:"Welche Aufgabe gehört zur Evaluierung und Abschlussberichterstattung?",
+options:[
+"Sicherheitsrisikostufen evaluieren",
+"Testumgebungen aufbauen",
+"Sicherheitstestbedingungen definieren",
+"Zeitpläne erstellen"
+],
+correct:0
+},
+
+{
+id:312,
+question:"Welche Aufgabe gehört zum Abschluss der Sicherheitstests?",
+options:[
+"Sicherheitsrisikobewertungen durchführen",
+"Testergebnisse archivieren",
+"Sicherheitsanforderungen prüfen",
+"Gefährdungsmodelle entwickeln"
+],
+correct:1
+},
+
+{
+id:313,
+question:"Welche Reihenfolge beschreibt die Hierarchie der Sicherheitstestplanung korrekt?",
+options:[
+"Sicherheitstestrichtlinie, Sicherheitsteststrategie, Sicherheitstestkonzept, Sicherheitstestaufgaben",
+"Sicherheitsteststrategie, Richtlinie, Aufgaben, Konzept",
+"Sicherheitstestaufgaben, Richtlinie, Strategie, Konzept",
+"Sicherheitstestkonzept, Richtlinie, Aufgaben, Strategie"
+],
+correct:0
+},
+
+{
+id:314,
+question:"Welche Aussage trifft auf sequenzielle Lebenszyklen zu?",
+options:[
+"Sicherheitserfordernisse entstehen ausschließlich während der Wartung",
+"Sicherheitstests werden typischerweise spät durchgeführt",
+"Sicherheitsrisiken ändern sich nie",
+"Ergebnisse können jederzeit leicht umgesetzt werden"
+],
+correct:1
+},
+
+{
+id:315,
+question:"Welches Risiko besteht bei sequenziellen Lebenszyklen?",
+options:[
+"Sicherheitstest-Ergebnisse am Projektende können schwer umzusetzen sein",
+"Sicherheitsanforderungen werden nie dokumentiert",
+"Es gibt keine Sicherheitsrisiken",
+"Es werden keine Tests durchgeführt"
+],
+correct:0
+},
+
+{
+id:316,
+question:"Welche Aussage beschreibt iterative oder inkrementelle Lebenszyklen am besten?",
+options:[
+"Sicherheitsanforderungen werden einmal festgelegt und ändern sich nicht",
+"Sicherheitstests werden nur am Projektende durchgeführt",
+"Sicherheitsrisiken können während des gesamten Projekts auftreten",
+"Nur die erste Iteration wird getestet"
+],
+correct:2
+},
+
+{
+id:317,
+question:"Was ist eine typische Eigenschaft von Standardsoftware (COTS)?",
+options:[
+"Quellcode ist vollständig verfügbar",
+"Strukturelle Analysen sind möglich",
+"Standardsoftware besitzt keine Sicherheitslücken",
+"Strukturelles Testen ist normalerweise nicht möglich"
+],
 correct:3
+},
+
+{
+id:318,
+question:"Welche Eigenschaft trifft auf Open-Source-Software zu?",
+options:[
+"Der Programmcode ist öffentlich einsehbar",
+"Strukturelles Testen ist ausgeschlossen",
+"Updates sind nicht erforderlich",
+"Sicherheitslücken sind geheim"
+],
+correct:0
+},
+
+{
+id:319,
+question:"Warum müssen Open-Source-Komponenten zeitnah aktualisiert werden?",
+options:[
+"Weil ältere Versionen nach Veröffentlichung einer Schwachstelle stärker gefährdet sein können",
+"Weil Quellcode sonst verschwindet",
+"Weil Benutzerrechte verloren gehen",
+"Weil Testdaten ungültig werden"
+],
+correct:0
+},
+
+{
+id:320,
+question:"Welche zwei Hauptziele stehen bei der Sicherheitstestplanung im Mittelpunkt?",
+options:[
+"Sicherheitsvorkehrungen prüfen und die Entstehung von Schwachstellen vermeiden",
+"Testberichte erstellen und Auditziele definieren",
+"Rollen verteilen und Benutzer schulen",
+"Daten klassifizieren und Netzwerke segmentieren"
+],
+correct:0
+},
+
+{
+id:321,
+question:"Worauf sollen Sicherheitsvorkehrungen laut Syllabus basieren?",
+options:[
+"Risikoanalyse",
+"Testdaten",
+"Firewall-Regeln",
+"Abschlussberichten"
+],
+correct:0
+},
+
+{
+id:322,
+question:"Welches Schlüsselelement betrachtet die Frage, welche Objekte innerhalb oder außerhalb der Tests liegen?",
+options:[
+"Review",
+"Zeitplanung",
+"Geltungsbereich",
+"Genehmigungen"
+],
+correct:2
+},
+
+{
+id:323,
+question:"Welche Fragestellung gehört zum Bereich 'Wer führt die Sicherheitstests durch'?",
+options:[
+"Müssen Tester geschult werden?",
+"Sind Browser aktuell?",
+"Sind Penetrationstests erlaubt?",
+"Ist die Datenbank verschlüsselt?"
+],
+correct:0
+},
+
+{
+id:324,
+question:"Welche Fragestellung gehört zur Zeitplanung?",
+options:[
+"Wie lange dauern die Sicherheitstests?",
+"Welche Auditberichte existieren?",
+"Welche Assets sind vertraulich?",
+"Welche Browser werden unterstützt?"
+],
+correct:0
+},
+
+{
+id:325,
+question:"Welche Fragestellung gehört zum Bereich Aufgaben und Aufwand?",
+options:[
+"Zeit für Regressionstests",
+"Anzahl der Benutzerkonten",
+"Anzahl der Sicherheitsrichtlinien",
+"Anzahl der Netzwerksegmente"
+],
+correct:0
+},
+
+{
+id:326,
+question:"Welche Fragestellung gehört zur Sicherheitstestumgebung?",
+options:[
+"Plattform, Technologie und benötigte Werkzeuge",
+"Budget und Finanzierung",
+"Verantwortliche Abteilungen",
+"Geschäftsrisiken"
+],
+correct:0
+},
+
+{
+id:327,
+question:"Welche Fragestellung gehört zum Bereich Genehmigungen?",
+options:[
+"Sind Budget und Finanzierung ausreichend?",
+"Welche Testdaten werden verwendet?",
+"Welche Schwachstellen sind bekannt?",
+"Welche Benutzerrollen existieren?"
+],
+correct:0
+},
+
+{
+id:328,
+question:"Welche Reviewform wird ausdrücklich genannt?",
+options:[
+"Inspektion",
+"Exploratives Review",
+"Abnahme-Review",
+"Architektur-Review"
+],
+correct:0
+},
+
+{
+id:329,
+question:"Welche Person kann an einem Review der Sicherheitstestvorgehensweise beteiligt sein?",
+options:[
+"Sicherheitsadministrator",
+"Marketingmanager",
+"Vertriebsleiter",
+"Endkunde"
+],
+correct:0
+},
+
+{
+id:330,
+question:"Ein Unternehmen analysiert den Geltungsbereich, die Zeitplanung und die Genehmigungen für Sicherheitstests.\n\nWelcher Unterpunkt des Syllabus wird hier hauptsächlich behandelt?",
+options:[
+"3.1.2 Lebenszyklusmodelle",
+"3.2.2 Schlüsselelemente der Sicherheitstestvorgehensweise",
+"3.1.1 Analyse und Entwurf",
+"3.2.1 Ziele der Sicherheitstestplanung"
+],
+correct:1
 }
 
 ];

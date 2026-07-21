@@ -218,363 +218,314 @@ button{
 /* PEGAR AQUÍ TU ARRAY QUESTIONS */
 
 const questions = [
-
 {
 id:201,
-question:"Wie unterscheiden sich Sicherheitstests laut Syllabus von anderen Formen des funktionalen Testens?",
+question:"Warum können Sicherheitstests nicht die vollständige Sicherheit eines Systems garantieren?",
 options:[
-"Standardtechniken zur Testdatenauswahl können wichtige Sicherheitsfragen unberücksichtigt lassen",
-"Sicherheitstests verwenden grundsätzlich keine Anforderungen als Grundlage",
-"Sicherheitstests konzentrieren sich ausschließlich auf Netzwerksicherheit",
-"Sicherheitstests werden nur nach Abschluss der Entwicklung durchgeführt"
+"Weil Sicherheit nur durch sichere Entwicklungs- und Entwurfspraktiken erreicht werden kann",
+"Weil Sicherheitstests ausschließlich nach der Freigabe durchgeführt werden",
+"Weil Sicherheitstests nur auf Netzwerkkomponenten angewendet werden",
+"Weil Sicherheitstests keine Sicherheitsanforderungen verwenden"
 ],
 correct:0
 },
 
 {
 id:202,
-question:"Welche potenzielle Gefährdung wird im Syllabus ausdrücklich genannt?",
+question:"Welchen Nutzen haben Sicherheitstests für ein Unternehmen?",
 options:[
-"Unbefugtes Kopieren von Anwendungen oder Daten",
-"Fehlende Dokumentation von Anforderungen",
-"Nicht aktualisierte Projektpläne",
-"Unvollständige Testberichte"
-],
-correct:0
-},
-
-{
-id:203,
-question:"Welche Gefährdung beschreibt die Ausführung eingefügten Programmcodes bei nachfolgenden Benutzern einer Webseite?",
-options:[
-"Cross-site Scripting",
-"Dienstblockade",
-"Man in the Middle",
-"Passwort-Knacken"
-],
-correct:0
-},
-
-{
-id:204,
-question:"Welche Gefährdung entsteht durch die Eingabe langer Datenstrings und kann die Ausführung bösartigen Codes ermöglichen?",
-options:[
-"Pufferüberlauf",
-"Code-Injection",
-"Account Harvesting",
-"Malware-Scan"
-],
-correct:0
-},
-
-{
-id:205,
-question:"Welche Gefährdung verhindert die Interaktion von Benutzern mit einer Anwendung durch Überlastung von Ressourcen?",
-options:[
-"Dienstblockade (DoS)",
-"Cross-site Scripting",
-"Pharming",
-"Autorisierung"
-],
-correct:0
-},
-
-{
-id:206,
-question:"Was beschreibt ein Man-in-the-Middle-Angriff laut Syllabus?",
-options:[
-"Abfangen, Ändern und Weiterleiten von Kommunikationsinhalten durch Dritte",
-"Verwendung gestohlener Benutzerkonten durch Mitarbeiter",
-"Überlastung von Servern durch große Datenmengen",
-"Einfügen bösartiger Skripte in Datenbanken"
-],
-correct:0
-},
-
-{
-id:207,
-question:"Welchen Nutzen haben Sicherheitstests für Unternehmen laut Syllabus?",
-options:[
-"Sie helfen Schwachstellen zu identifizieren und Risiken zu ermitteln",
-"Sie garantieren vollständigen Schutz vor Angriffen",
-"Sie ersetzen Sicherheitsrichtlinien und Audits",
+"Sie helfen dabei, Schwachstellen zu identifizieren und Risiken zu ermitteln",
+"Sie ersetzen Sicherheitsrichtlinien und Sicherheitsverfahren",
+"Sie machen Risikobewertungen überflüssig",
 "Sie verhindern jede zukünftige Sicherheitsverletzung"
 ],
 correct:0
 },
 
 {
-id:208,
-question:"Welchen zusätzlichen Vorteil können Sicherheitstests bei rechtlichen Auseinandersetzungen bieten?",
+id:203,
+question:"Ein Unternehmen möchte Kunden nachweisen, dass angemessene Maßnahmen zum Schutz sensibler Informationen getroffen wurden.\n\nWelchen Beitrag leisten Sicherheitstests dazu?",
 options:[
-"Sie können nachweisen, dass angemessene Schutzmaßnahmen ergriffen wurden",
-"Sie ersetzen alle gesetzlichen Anforderungen",
-"Sie machen Audits überflüssig",
-"Sie ersetzen Sicherheitsrichtlinien"
+"Sie liefern Hinweise auf die Wirksamkeit vorhandener Schutzmaßnahmen",
+"Sie ersetzen vertragliche Verpflichtungen gegenüber Kunden",
+"Sie garantieren die vollständige Vertraulichkeit aller Daten",
+"Sie beseitigen automatisch alle Sicherheitslücken"
+],
+correct:0
+},
+
+{
+id:204,
+question:"Ein Angreifer fügt schädlichen Programmcode in eine Webseite ein, der später von anderen Benutzern ausgeführt wird.\n\nWelche Gefährdung wird beschrieben?",
+options:[
+"Man in the Middle",
+"Dienstblockade",
+"Cross-site Scripting",
+"Passwort-Knacken"
+],
+correct:2
+},
+
+{
+id:205,
+question:"Ein Angreifer überlastet die Ressourcen eines Systems, sodass legitime Benutzer den Dienst nicht mehr nutzen können.\n\nWelche Gefährdung liegt vor?",
+options:[
+"Cross-site Scripting",
+"Code-Injection",
+"Pharming",
+"Dienstblockade (DoS)"
+],
+correct:3
+},
+
+{
+id:206,
+question:"Ein Angreifer fängt Netzwerkverkehr ab, verändert Informationen und leitet sie anschließend weiter.\n\nWelche Gefährdung beschreibt dieses Verhalten?",
+options:[
+"Man in the Middle",
+"Cross-site Scripting",
+"Passwort-Knacken",
+"Harvesting"
+],
+correct:0
+},
+
+{
+id:207,
+question:"Welcher Faktor bestimmt laut Syllabus letztlich den Umfang der Sicherheitstests?",
+options:[
+"Die Anzahl der Sicherheitstester",
+"Geschäftliche oder unternehmerische Risiken",
+"Die Größe der Entwicklungsabteilung",
+"Die eingesetzte Programmiersprache"
+],
+correct:1
+},
+
+{
+id:208,
+question:"Warum müssen Sicherheitstestziele mit der Sicherheitsrichtlinie des Unternehmens übereinstimmen?",
+options:[
+"Damit die Tests den vorgesehenen Zweck erfüllen",
+"Damit Sicherheitslücken automatisch beseitigt werden",
+"Damit weniger Testfälle erstellt werden müssen",
+"Damit keine Risikobewertung erforderlich ist"
 ],
 correct:0
 },
 
 {
 id:209,
-question:"Wovon wird der Umfang der Sicherheitstests laut Syllabus letztlich bestimmt?",
+question:"Welche Grundlage soll bei der Definition von Sicherheitstestzielen berücksichtigt werden?",
 options:[
-"Von geschäftlichen oder unternehmerischen Risiken",
-"Von der Anzahl der Entwickler",
-"Von der Anzahl der Benutzerkonten",
-"Von der Größe der Datenbank"
+"Technologiemerkmale und bekannte Schwachstellen",
+"Marketingstrategie und Unternehmensumsatz",
+"Anzahl der Benutzer und Anzahl der Server",
+"Projektbudget und Geschäftsmodell"
 ],
 correct:0
 },
 
 {
 id:210,
-question:"Welche Aussage zur Sicherheit im Softwareentwicklungslebenszyklus trifft zu?",
+question:"Welches Sicherheitstestziel wird im Syllabus ausdrücklich als Beispiel genannt?",
 options:[
-"Sicherheit muss durch sichere Entwicklungs- und Entwurfspraktiken integriert werden",
-"Sicherheit entsteht ausschließlich durch Penetrationstests",
-"Sicherheit wird erst vor der Freigabe relevant",
-"Sicherheit wird durch Audits allein gewährleistet"
+"Nachweis, dass Dateneingabefelder eingabevalidiert sind",
+"Nachweis der Einhaltung eines Projektplans",
+"Nachweis einer ausreichenden Serverleistung",
+"Nachweis des Schulungsstands der Mitarbeiter"
 ],
 correct:0
 },
 
 {
 id:211,
-question:"Warum müssen Sicherheitstestziele mit der Sicherheitsrichtlinie des Unternehmens übereinstimmen?",
+question:"Welche Aussage beschreibt den Zusammenhang zwischen Informationsschutz und Sicherheitstests korrekt?",
 options:[
-"Damit die Tests den gewünschten Zweck erfüllen und autorisiert sind",
-"Damit Sicherheitsrisiken vollständig eliminiert werden",
-"Damit weniger Testfälle erstellt werden müssen",
-"Damit Sicherheitsrichtlinien vereinfacht werden können"
+"Informationsschutz ist das weiter gefasste Konzept",
+"Sicherheitstests sind das weiter gefasste Konzept",
+"Beide Begriffe sind bedeutungsgleich",
+"Informationsschutz ist Teil von Penetrationstests"
 ],
 correct:0
 },
 
 {
 id:212,
-question:"Welche Grundlage soll laut Syllabus für die Auswahl von Sicherheitstestzielen verwendet werden?",
+question:"Worauf müssen sich Sicherheitstestziele direkt beziehen?",
 options:[
-"Funktionalität, Technologiemerkmale und bekannte Schwachstellen",
-"Projektbudget, Mitarbeiterzahl und Infrastruktur",
-"Netzwerkzonen, Datenbanken und Betriebssysteme",
-"Auditberichte, Verträge und Organigramme"
+"Assets, Schutzmaßnahmen, Risiken und Sicherheitsschwachstellen",
+"Programmiersprachen, Frameworks und Entwicklungswerkzeuge",
+"Budgets, Projektpläne und Organigramme",
+"Server, Browser und Datenbanken"
 ],
 correct:0
 },
 
 {
 id:213,
-question:"Welches Beispiel wird ausdrücklich als mögliches Sicherheitstestziel genannt?",
+question:"Welche Aussage beschreibt den Zweck einer Sicherheitsteststrategie am besten?",
 options:[
-"Nachweis, dass alle Dateneingabefelder eingabevalidiert sind",
-"Nachweis, dass alle Benutzer identische Rechte besitzen",
-"Nachweis, dass alle Daten öffentlich verfügbar sind",
-"Nachweis, dass alle Berichte verschlüsselt werden"
+"Sie formalisiert und kommuniziert die allgemeine Ausrichtung des Unternehmens",
+"Sie ersetzt Sicherheitsrichtlinien",
+"Sie definiert Sicherheitsrisiken für einzelne Systeme",
+"Sie erstellt automatisch Sicherheitstestfälle"
 ],
 correct:0
 },
 
 {
 id:214,
-question:"Wie beschreibt der Syllabus das Verhältnis zwischen Informationsschutz und Sicherheitstests?",
+question:"Welche Einflussgröße soll bei der Analyse einer Sicherheitstestvorgehensweise berücksichtigt werden?",
 options:[
-"Informationsschutz ist das weiter gefasste Konzept",
-"Sicherheitstests sind das weiter gefasste Konzept",
-"Beide Begriffe beschreiben denselben Inhalt",
-"Informationsschutz ist ein Teil von Sicherheitstests"
+"Technische Umgebung",
+"Farbe der Benutzeroberfläche",
+"Alter der Anwendung",
+"Anzahl vorhandener Benutzerkonten"
 ],
 correct:0
 },
 
 {
 id:215,
-question:"Was beschreiben Sicherheitstestziele im Wesentlichen?",
+question:"Ein Unternehmen betreibt sowohl eingebettete Systeme als auch Webanwendungen.\n\nWelche Aussage trifft laut Syllabus zu?",
 options:[
-"Den Umfang der Sicherheitstests",
-"Die Anzahl der Testfälle",
-"Die Datenklassifizierung eines Systems",
-"Die Struktur der Testorganisation"
+"Verschiedene technische Umgebungen können verschiedene Sicherheitstestvorgehensweisen erfordern",
+"Alle technischen Umgebungen verwenden dieselbe Vorgehensweise",
+"Nur Webanwendungen benötigen Sicherheitstests",
+"Sicherheitstests sind unabhängig von der Technologie"
 ],
 correct:0
 },
 
 {
 id:216,
-question:"Worauf müssen sich Sicherheitstestziele direkt beziehen?",
+question:"Welche Ursache für das Fehlschlagen einer Sicherheitstestvorgehensweise wird ausdrücklich genannt?",
 options:[
-"Assets, Schutzmaßnahmen, Risiken und Sicherheitsschwachstellen",
-"Benutzerrollen, Organigramme und Budgets",
-"Programmiersprachen, Frameworks und Datenbanken",
-"Projektpläne, Termine und Ressourcen"
+"Fehlende Bereitstellung von Ressourcen",
+"Zu viele Sicherheitstestziele",
+"Zu viele Sicherheitsrichtlinien",
+"Zu viele Unternehmensbereiche"
 ],
 correct:0
 },
 
 {
 id:217,
-question:"Wozu dient die Sicherheitsteststrategie laut Syllabus?",
+question:"Welche weitere Ursache für das Fehlschlagen einer Sicherheitstestvorgehensweise wird genannt?",
 options:[
-"Zur Formalisierung und Kommunikation der allgemeinen Ausrichtung des Unternehmens",
-"Zur Klassifizierung sensibler Daten",
-"Zur Definition neuer Sicherheitsrichtlinien",
-"Zur Durchführung von Sicherheitsaudits"
+"Fehlende Kompetenzen im Hinblick auf Sicherheitstests",
+"Zu viele Sicherheitstests",
+"Zu viele Stakeholder",
+"Zu viele Assets"
 ],
 correct:0
 },
 
 {
 id:218,
-question:"Welcher Aspekt soll bei der Analyse einer Sicherheitstestvorgehensweise berücksichtigt werden?",
+question:"Warum wird häufig ein Business Case für Sicherheitstests erstellt?",
 options:[
-"Die technische Umgebung",
-"Die Farbe von Benutzeroberflächen",
-"Die Anzahl der Besprechungsräume",
-"Die Form der Organigramme"
+"Um Risiken und Nutzen der Sicherheitstestvorgehensweise darzustellen",
+"Um Sicherheitsrichtlinien zu ersetzen",
+"Um Datenklassifizierungen festzulegen",
+"Um Auditberichte automatisch zu erzeugen"
 ],
 correct:0
 },
 
 {
 id:219,
-question:"Welche Aussage zu unterschiedlichen technischen Umgebungen ist korrekt?",
+question:"Welchen Nutzen sehen Geschäftskunden typischerweise in Sicherheitstests?",
 options:[
-"Unterschiedliche Umgebungen erfordern häufig unterschiedliche Sicherheitstestvorgehensweisen",
-"Alle Umgebungen benötigen dieselbe Sicherheitstestvorgehensweise",
-"Sicherheitstests sind unabhängig von der verwendeten Technologie",
-"Nur Internet-Anwendungen benötigen eigene Vorgehensweisen"
+"Schutz vor Missbrauch",
+"Automatische Compliance",
+"Automatische Risikoeliminierung",
+"Automatische Authentifizierung"
 ],
 correct:0
 },
 
 {
 id:220,
-question:"Welche Ursache für das Fehlschlagen einer Sicherheitstestvorgehensweise nennt der Syllabus?",
+question:"Welchen Nutzen sehen Compliance-Beauftragte typischerweise in Sicherheitstests?",
 options:[
-"Fehlende Bereitstellung der benötigten Ressourcen",
-"Zu viele Sicherheitsanforderungen",
-"Zu viele Sicherheitstestwerkzeuge",
-"Zu viele Projektbeteiligte"
+"Einhaltung gesetzlicher Verpflichtungen",
+"Reduzierung von Betriebskosten",
+"Verbesserung der Softwarearchitektur",
+"Erhöhung der Systemverfügbarkeit"
 ],
 correct:0
 },
 
 {
 id:221,
-question:"Welche weitere Ursache für das Fehlschlagen einer Sicherheitstestvorgehensweise wird genannt?",
+question:"Welchen Nutzen sehen Datenschutzbeauftragte typischerweise in Sicherheitstests?",
 options:[
-"Fehlende Kompetenzen im Hinblick auf Sicherheitstests",
-"Zu viele Sicherheitsrichtlinien",
-"Zu viele digitale Assets",
-"Zu viele Testberichte"
+"Schutz personenbezogener Daten und digitaler Assets",
+"Automatische Verschlüsselung aller Daten",
+"Vereinfachung der Benutzerverwaltung",
+"Reduktion der Testdokumentation"
 ],
 correct:0
 },
 
 {
 id:222,
-question:"Warum wird häufig ein Business Case für Sicherheitstests entwickelt?",
+question:"Womit beginnt die Optimierung von Sicherheitstestpraktiken?",
 options:[
-"Um Risiken und Nutzen der Sicherheitstestvorgehensweise zu verdeutlichen",
-"Um Sicherheitsrichtlinien zu ersetzen",
-"Um Daten zu klassifizieren",
-"Um Audits überflüssig zu machen"
+"Mit einer Prüfung der bestehenden Praktiken",
+"Mit einem Penetrationstest",
+"Mit einem Auditbericht",
+"Mit einer Datenschutzanalyse"
 ],
 correct:0
 },
 
 {
 id:223,
-question:"Welchen Nutzen sehen Geschäftskunden laut Syllabus typischerweise in Sicherheitstests?",
+question:"Aus welchen Perspektiven sollen Sicherheitstestpraktiken bewertet werden?",
 options:[
-"Schutz vor Missbrauch",
-"Reduzierung der Entwicklungsdauer",
-"Erhöhung der Benutzeranzahl",
-"Automatisierung der Datenklassifizierung"
+"Aus kurz- und langfristiger Perspektive",
+"Nur aus technischer Perspektive",
+"Nur aus betriebswirtschaftlicher Perspektive",
+"Nur aus regulatorischer Perspektive"
 ],
 correct:0
 },
 
 {
 id:224,
-question:"Welchen Nutzen sehen Compliance-Beauftragte typischerweise in Sicherheitstests?",
+question:"Welche Schlüsselmetrik wird ausdrücklich genannt?",
 options:[
-"Gewährleistung der Einhaltung gesetzlicher Verpflichtungen",
-"Vereinfachung der Benutzerverwaltung",
-"Reduzierung der Sicherheitsanforderungen",
-"Automatisierung aller Kontrollmechanismen"
+"Überdeckungsgrad von Sicherheitsrisiken durch Tests",
+"Anzahl der Benutzerkonten",
+"Anzahl der Sicherheitsrichtlinien",
+"Anzahl der Audits"
 ],
 correct:0
 },
 
 {
 id:225,
-question:"Welchen Nutzen sehen Datenschutzbeauftragte typischerweise in Sicherheitstests?",
+question:"Welche weitere Schlüsselmetrik wird im Zusammenhang mit Sicherheitstestpraktiken genannt?",
 options:[
-"Dass personenbezogene Daten sicher sind und geschützt werden",
-"Dass alle Daten veröffentlicht werden können",
-"Dass Sicherheitsrichtlinien ersetzt werden",
-"Dass Benutzerkonten automatisiert erstellt werden"
+"Überdeckungsgrad von Sicherheitsanforderungen durch Tests",
+"Überdeckungsgrad von Datenbanken",
+"Überdeckungsgrad von Netzwerkzonen",
+"Überdeckungsgrad von Servern"
 ],
 correct:0
 },
 
 {
 id:226,
-question:"Womit beginnt die Optimierung von Sicherheitstestpraktiken?",
+question:"Ein Unternehmen analysiert die in der Vergangenheit gefundenen Sicherheitsschwachstellen.\n\nWelches Ziel wird damit verfolgt?",
 options:[
-"Mit einer Prüfung der bestehenden Praktiken",
-"Mit der Einführung neuer Werkzeuge",
-"Mit der Definition neuer Sicherheitsziele",
-"Mit der Erstellung zusätzlicher Testberichte"
-],
-correct:0
-},
-
-{
-id:227,
-question:"Wie müssen Sicherheitstestpraktiken laut Syllabus bewertet werden?",
-options:[
-"Aus kurz- und langfristiger Perspektive",
-"Ausschließlich auf Basis technischer Kennzahlen",
-"Nur auf Basis von Auditergebnissen",
-"Nur auf Basis von Sicherheitsrichtlinien"
-],
-correct:0
-},
-
-{
-id:228,
-question:"Welche Schlüsselmetrik wird zur Bewertung von Sicherheitstestpraktiken genannt?",
-options:[
-"Überdeckungsgrad von Sicherheitsrisiken durch Tests",
-"Anzahl aktiver Benutzerkonten",
-"Anzahl installierter Firewalls",
-"Anzahl vorhandener Auditberichte"
-],
-correct:0
-},
-
-{
-id:229,
-question:"Welche weitere Schlüsselmetrik wird ausdrücklich genannt?",
-options:[
-"Überdeckungsgrad von Sicherheitsanforderungen durch Tests",
-"Überdeckungsgrad von Datenbanken durch Benutzer",
-"Überdeckungsgrad von Netzwerken durch Firewalls",
-"Überdeckungsgrad von Berichten durch Audits"
-],
-correct:0
-},
-
-{
-id:230,
-question:"Worauf basiert die Bewertung der Wirksamkeit früherer Sicherheitstests?",
-options:[
-"Darauf, wann und wo Sicherheitsschwachstellen gefunden wurden",
-"Darauf, wie viele Tester beteiligt waren",
-"Darauf, wie viele Meetingprotokolle erstellt wurden",
-"Darauf, wie viele Benutzerkonten vorhanden waren"
+"Bewertung der Wirksamkeit früherer Sicherheitstests",
+"Ermittlung der Datenklassifizierung",
+"Definition neuer Unternehmensrichtlinien",
+"Planung einer Netzwerkerweiterung"
 ],
 correct:0
 }
